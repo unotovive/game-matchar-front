@@ -4,7 +4,7 @@
 <script lang="ts">
 import { Vue, Component, Prop, Watch } from 'vue-property-decorator';
 @Component({})
-export default class Home extends Vue {
+export default class Login extends Vue {
 }
 </script>
 
