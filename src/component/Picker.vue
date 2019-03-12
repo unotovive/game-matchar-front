@@ -65,7 +65,7 @@ export default class Picker extends Vue {
   height: 100vh;
   width: 100vw;
   background: #f7f7f7;
-  ​.to {
+  .to {
     position: fixed;
     height: 64px;
     width: 100%;
