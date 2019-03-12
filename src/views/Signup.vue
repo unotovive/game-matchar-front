@@ -1,5 +1,6 @@
 <template>
   <div class="signup">
+    <picker :isShow="showPicker" :list="tags" class="picker" @select="select"/>
     <div class="top">
       <h1>GameMatchar</h1>
     </div>
@@ -12,34 +13,79 @@
       <div class="field">
         <h2>私のタイプ</h2>
         <div class="tag-list">
-          <div class="tags">
-            <template v-if="selectedTags.length == 0">
-              <p>タグを選択してください</p>
-            </template>
-            <template v-else>
-              <div v-for="(tag, index) in selectedTags" :key="index" class="tag">{{tag.name}} ✖︎</div>
+          <div class="tags" v-if="selectedTags.length > 0">
+            <template>
+              <div v-for="(tag, index) in selectedTags" :key="index" class="tag">{{tag.name}}</div>
             </template>
           </div>
-          <div class="tag-plus">+</div>
+          <div @click="showPicker = true" class="tag-plus">
+            <p>+</p>
+          </div>
         </div>
       </div>
-      <div class="field">
+      <div class="field" style="height: auto;">
         <h2>私の年齢</h2>
         <div class="age-list">
-          <div class="age">~10</div>
-          <div class="age">10~</div>
-          <div class="age">20~</div>
-          <div class="age">30~</div>
-          <div class="age">40~</div>
+          <div @click="setAge(0)" class="age" :class="{ 'selected': age == 0 }">~10</div>
+          <div @click="setAge(1)" class="age" :class="{ 'selected': age == 1 }">10~</div>
+          <div @click="setAge(2)" class="age" :class="{ 'selected': age == 2 }">20~</div>
+          <div @click="setAge(3)" class="age" :class="{ 'selected': age == 3 }">30~</div>
+          <div @click="setAge(4)" class="age" :class="{ 'selected': age == 4 }">40~</div>
         </div>
       </div>
-      <div class="field">
+      <div class="field" style="height: auto;">
         <h2>私の性別</h2>
         <div class="age-list">
-          <div class="gend">~10</div>
-          <div class="gend">10~</div>
-          <div class="gend">20~</div>
+          <div @click="setGend(0)" class="gend" :class="{ 'selected': gend === 0 }">🚹</div>
+          <div @click="setGend(1)" class="gend" :class="{ 'selected': gend === 1 }">🚺</div>
+          <div @click="setGend(2)" class="gend" :class="{ 'selected': gend === 2 }">㊙️</div>
         </div>
+      </div>
+      <div class="field" style="height: auto;">
+        <h2>私がよく遊ぶ時間</h2>
+        <div class="cp_ipcheck">
+          <ul>
+            <li class="list_item">
+              <label>
+                <input type="checkbox" class="option-input05" checked>
+                平日午前中
+              </label>
+            </li>
+            <li class="list_item">
+              <label>
+                <input type="checkbox" class="option-input05">
+                平日夕方
+              </label>
+            </li>
+            <li class="list_item">
+              <label>
+                <input type="checkbox" class="option-input05">
+                平日夜
+              </label>
+            </li>
+            <li class="list_item">
+              <label>
+                <input type="checkbox" class="option-input05">
+                土日午前中
+              </label>
+            </li>
+            <li class="list_item">
+              <label>
+                <input type="checkbox" class="option-input05">
+                土日夕方
+              </label>
+            </li>
+            <li class="list_item">
+              <label>
+                <input type="checkbox" class="option-input05">
+                土日夜
+              </label>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="bot">
+        <div class="button" @click="$emit('select', selected)">次へ</div>
       </div>
     </div>
   </div>
@@ -47,13 +93,20 @@
 
 <script lang="ts">
 import { Vue, Component, Prop, Watch } from 'vue-property-decorator';
+import Picker from '@/component/Picker.vue';
 import axios from 'axios';
 
-@Component({})
+@Component({
+  components: { Picker },
+})
 export default class Signup extends Vue {
   private tags: any[] = [];
 
   private selectedTags: any[] = [];
+  private age: number | null = null;
+  private gend: number | null = null;
+
+  private showPicker: boolean = false;
 
   public created() {
     axios
@@ -63,6 +116,16 @@ export default class Signup extends Vue {
         this.selectedTags = res.data;
       });
   }
+  public select(selected: any[]) {
+    this.showPicker = false;
+    this.selectedTags = selected.length === 0 ? [] : selected;
+  }
+  public setAge(n: number) {
+    this.age = n === this.age ? null : n;
+  }
+  public setGend(n: number) {
+    this.gend = n === this.gend ? null : n;
+  }
 }
 </script>
 
@@ -70,7 +133,7 @@ export default class Signup extends Vue {
 .signup {
   width: 100%;
   height: 100%;
-  overflow: hidden;
+  overflow: auto;
 }
 
 .top {
@@ -94,11 +157,14 @@ export default class Signup extends Vue {
 
 .main {
   background: #f7f7f7;
-  height: 100%;
   width: 100%;
+  height: auto;
   padding: 1rem;
   padding-top: calc(1em + 52px);
+  padding-bottom: calc(1em + 52px);
   box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
 
   .img-name {
     height: 100px;
@@ -151,7 +217,7 @@ export default class Signup extends Vue {
   width: 100%;
   height: 100%;
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
 }
 .tags {
@@ -161,14 +227,20 @@ export default class Signup extends Vue {
   align-items: center;
 }
 .tag-plus {
-  width: 1.3em;
-  height: 1.3em;
-  border-radius: 0.9em;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 2em;
   font-weight: bold;
+  font-size: 2em;
+  padding: 0;
   color: #71b347;
   border: 2px solid #71b347;
-  min-width: 1.1em;
-  margin-left: 1em;
+  min-width: 2rem;
+  margin-left: 1rem;
+  p {
+    position: relative;
+    top: -2px;
+  }
 }
 .tag {
   height: 1.3em;
@@ -210,5 +282,102 @@ h2 {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+.picker {
+  width: 100vw;
+  height: 100vh;
+  z-index: 100;
+  position: fixed;
+  top: 0;
+}
+.selected {
+  color: #71b347;
+  border-color: #71b347;
+}
+.cp_ipcheck {
+  width: 100%;
+  text-align: left;
+  user-select: none;
+  margin-top: 0.7em;
+}
+.cp_ipcheck .list_item {
+  margin: 0 0 0.5rem 0;
+  padding: 0;
+}
+.cp_ipcheck label {
+  line-height: 135%;
+  position: relative;
+  cursor: pointer;
+}
+.cp_ipcheck .option-input05 {
+  position: relative;
+  margin: 0 1rem 0 0;
+  cursor: pointer;
+}
+.cp_ipcheck .option-input05:before {
+  position: absolute;
+  z-index: 1;
+  top: 0.125rem;
+  left: 0.1875rem;
+  width: 0.75rem;
+  height: 0.375rem;
+  content: '';
+  -webkit-transition: -webkit-transform 0.4s cubic-bezier(0.45, 1.8, 0.5, 0.75);
+  transition: transform 0.4s cubic-bezier(0.45, 1.8, 0.5, 0.75);
+  -webkit-transform: rotate(-45deg) scale(0, 0);
+  transform: rotate(-45deg) scale(0, 0);
+  border: 2px solid #71b347;
+  border-top-style: none;
+  border-right-style: none;
+}
+.cp_ipcheck .option-input05:checked:before {
+  -webkit-transform: rotate(-45deg) scale(1, 1);
+  transform: rotate(-45deg) scale(1, 1);
+}
+.cp_ipcheck .option-input05:after {
+  position: absolute;
+  top: -0.125rem;
+  left: 0;
+  width: 1rem;
+  height: 1rem;
+  content: '';
+  cursor: pointer;
+  border: 2px solid #f2f2f2;
+  background: #ffffff;
+}
+.bot {
+  position: fixed;
+  height: 52px;
+  width: 100vw;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: #fff;
+  font-family: 'Comfortaa';
+  color: #444;
+  font-size: 1.1rem;
+  font-weight: bold;
+  box-shadow: 0px 0px 6px 4px rgba(0, 0, 0, 0.1);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10;
+  h1 {
+    font-size: 1.4rem;
+    padding-left: 0.7em;
+  }
+}
+.button {
+  width: 90%;
+  height: 80%;
+  background: #f74a7b;
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #fff;
+}
+.button:active {
+  background: #d3406a;
 }
 </style>
