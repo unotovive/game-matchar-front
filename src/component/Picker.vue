@@ -11,14 +11,23 @@
         >{{item.name}} ×</div>
       </transition-group>
     </div>
-    <transition-group tag="div" name="selected" class="list">
-      <div
-        @click="select(item, index)"
-        v-for="(item, index) in notSelected"
-        :key="item.id"
-        class="item"
-      >{{item.name}} +</div>
-    </transition-group>
+    <template v-if="game">
+      <transition-group tag="div" name="selected" class="list">
+        <div
+          @click="select(item, index)"
+          v-for="(item, index) in notSelected"
+          :key="item.id"
+          class="item"
+        >{{item.name}} +</div>
+      </transition-group>
+    </template>
+    <template v-else>
+      <transition-group tag="div" name="selected" class="list">
+        <div v-for="(item, index) in notSelected" :key="item.id" @click="select(item, index)">
+          <game-card :game="item"/>
+        </div>
+      </transition-group>
+    </template>
     <div class="bot">
       <div class="button" @click="$emit('select', selected)" v-if="selected.length === 0">追加しないで戻る</div>
       <div class="button" @click="$emit('select', selected)" v-else>選択中の{{selected.length}}個を追加</div>
@@ -28,14 +37,22 @@
 
 <script lang="ts">
 import { Vue, Component, Prop, Watch } from 'vue-property-decorator';
+import GameCard from '@/component/GameCard.vue';
 
-@Component({})
+@Component({
+  components: {
+    GameCard,
+  },
+})
 export default class Picker extends Vue {
   @Prop({ default: false })
   private isShow!: boolean;
 
   @Prop({ default: '選択してください' })
   private placeholder?: string;
+
+  @Prop({ default: false })
+  private game!: boolean;
 
   @Prop({
     default: [],
@@ -65,6 +82,7 @@ export default class Picker extends Vue {
   height: 100vh;
   width: 100vw;
   background: #f7f7f7;
+  overflow: auto;
   .to {
     position: fixed;
     height: 64px;
@@ -114,7 +132,6 @@ export default class Picker extends Vue {
   }
   .list {
     width: 100vw;
-    padding: 1em;
     padding-top: calc(64px + 1em);
     padding-bottom: calc(64px + 1em);
     box-sizing: border-box;

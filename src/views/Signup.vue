@@ -1,6 +1,7 @@
 <template>
   <div class="signup">
-    <picker :isShow="showPicker" :list="tags" class="picker" @select="select"/>
+    <picker :isShow="showPicker" :list="tags" class="picker" :game="true" @select="select"/>
+    <picker :isShow="showGPicker" :list="games" class="picker" @select="selectG"/>
     <div class="top">
       <h1>GameMatchar</h1>
     </div>
@@ -10,6 +11,21 @@
         <input type="text" placeholder="ニックネームを入力">
       </div>
       <textarea placeholder="自己紹介を入力。例：ゆるくやっていきたいです！LoLメインでやっているので誘っていただけると嬉しいです。"/>
+      <div class="field" style="height: auto;">
+        <h2>私のゲーム</h2>
+        <div class="game-list">
+          <div class="games" v-if="selectedGames.length > 0">
+            <template>
+              <div v-for="(game, index) in selectedGames" :key="index" class="game">
+                <game-card :game="game"/>
+              </div>
+            </template>
+          </div>
+          <div @click="showGPicker = true" class="tag-plus">
+            <p>+</p>
+          </div>
+        </div>
+      </div>
       <div class="field">
         <h2>私のタイプ</h2>
         <div class="tag-list">
@@ -95,30 +111,46 @@
 import { Vue, Component, Prop, Watch } from 'vue-property-decorator';
 import Picker from '@/component/Picker.vue';
 import axios from 'axios';
+import GameCard from '@/component/GameCard.vue';
 
 @Component({
-  components: { Picker },
+  components: {
+    Picker,
+    GameCard,
+  },
 })
 export default class Signup extends Vue {
   private tags: any[] = [];
+  private games: any[] = [];
 
   private selectedTags: any[] = [];
+  private selectedGames: any[] = [];
+
   private age: number | null = null;
   private gend: number | null = null;
 
   private showPicker: boolean = false;
+  private showGPicker: boolean = false;
 
   public created() {
     axios
-      .get('http://5c86094ecc034a0014bd24ae.mockapi.io/tag/tags')
+      .get('http://5c86094ecc034a0014bd24ae.mockapi.io/tags')
       .then((res: any) => {
         this.tags = res.data;
-        this.selectedTags = res.data;
+      });
+    axios
+      .get('http://5c86094ecc034a0014bd24ae.mockapi.io/games')
+      .then((res: any) => {
+        this.games = res.data;
       });
   }
   public select(selected: any[]) {
     this.showPicker = false;
     this.selectedTags = selected.length === 0 ? [] : selected;
+  }
+  public selectG(selected: any[]) {
+    this.showGPicker = false;
+    this.selectedGames = selected.length === 0 ? [] : selected;
   }
   public setAge(n: number) {
     this.age = n === this.age ? null : n;
@@ -213,11 +245,40 @@ export default class Signup extends Vue {
   align-items: flex-start;
   width: 100%;
 }
+.game-list {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 0.8rem;
+}
+.games {
+  overflow: scroll;
+  display: flex;
+  align-items: center;
+}
+.game-plus {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 2em;
+  font-weight: bold;
+  font-size: 2em;
+  padding: 0;
+  color: #71b347;
+  border: 2px solid #71b347;
+  min-width: 2rem;
+  margin-left: 1rem;
+  p {
+    position: relative;
+    top: -2px;
+  }
+}
 .tag-list {
   width: 100%;
   height: 100%;
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
 }
 .tags {
