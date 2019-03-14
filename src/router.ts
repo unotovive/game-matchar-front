@@ -34,14 +34,20 @@ export default new Router({
       path: '/chat/:cid',
       name: 'chat',
       component: () =>
-        import(/* webpackChunkName: "chat" */ './views/Chat.vue'),
+        import(/* webpackChunkName: "home" */ './views/Chat.vue'),
       props: true,
     },
     {
       path: '/search',
       name: 'search',
       component: () =>
-        import(/* webpackChunkName: "chat" */ './views/Search.vue'),
+        import(/* webpackChunkName: "home" */ './views/Search.vue'),
+    },
+    {
+      path: '/request',
+      name: 'request',
+      component: () =>
+        import(/* webpackChunkName: "request" */ './views/Request.vue'),
     },
     {
       path: '/mypage',
