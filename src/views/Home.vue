@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <tab :selected="0"/>
+    <tab class="tab" :selected="0"/>
   </div>
 </template>
 
@@ -15,4 +15,9 @@ export default class Home extends Vue {}
 </script>
 
 <style lang="scss" scoped>
+.tab {
+  z-index: 10;
+  position: fixed;
+  bottom: 0;
+}
 </style>

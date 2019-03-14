@@ -3,13 +3,7 @@
     <div class="main1">
       <img :src="user.img">
       <div class="cont">
-        <h1>
-          {{user.name}}, {{age}},
-          <span v-if="user.gend === 0">🚹</span>
-          <span v-if="user.gend === 1">🚺</span>
-          <span v-else-if="user.gend === 2">㊙︎</span>
-          <span v-else-if="user.gend === null">?</span>
-        </h1>
+        <h1>{{item.name}}, {{item.age | age }}, {{item.gend | gend}}</h1>
         <h4>Intro</h4>
         <p class="intro">{{user.description}}</p>
         <div class="line"/>
@@ -51,6 +45,36 @@ import GameCard from '@/component/GameCard.vue';
 @Component({
   components: {
     GameCard,
+  },
+  filters: {
+    age(age: number) {
+      switch (age) {
+        case 0:
+          return '~10';
+        case 1:
+          return '10~';
+        case 2:
+          return '20~';
+        case 3:
+          return '30~';
+        case 4:
+          return '40~';
+        default:
+          return '?';
+      }
+    },
+    gend(gend: number) {
+      switch (gend) {
+        case 0:
+          return '🚹';
+        case 1:
+          return '🚺';
+        case 2:
+          return '㊙︎';
+        default:
+          return '?';
+      }
+    },
   },
 })
 export default class User extends Vue {
