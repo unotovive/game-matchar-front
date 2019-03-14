@@ -151,7 +151,7 @@ import { Vue, Component, Prop, Watch } from 'vue-property-decorator';
 @Component({})
 export default class Tab extends Vue {
   @Prop({ default: 1 })
-  private selected?: number = 1;
+  private selected?: number;
 }
 </script>
 <style lang="scss" scoped>

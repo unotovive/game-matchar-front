@@ -38,10 +38,10 @@ export default new Router({
       props: true,
     },
     {
-      path: '/chat',
-      name: 'chatList',
+      path: '/search',
+      name: 'search',
       component: () =>
-        import(/* webpackChunkName: "chat" */ './views/ChatList.vue'),
+        import(/* webpackChunkName: "chat" */ './views/Search.vue'),
     },
     {
       path: '/mypage',
