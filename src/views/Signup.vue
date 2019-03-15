@@ -134,12 +134,12 @@ export default class Signup extends Vue {
 
   public created() {
     axios
-      .get('http://5c86094ecc034a0014bd24ae.mockapi.io/tags')
+      .get('https://5c86094ecc034a0014bd24ae.mockapi.io/tags')
       .then((res: any) => {
         this.tags = res.data;
       });
     axios
-      .get('http://5c86094ecc034a0014bd24ae.mockapi.io/games')
+      .get('https://5c86094ecc034a0014bd24ae.mockapi.io/games')
       .then((res: any) => {
         this.games = res.data;
       });
