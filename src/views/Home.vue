@@ -13,7 +13,7 @@
         </div>
       </div>
     </div>
-    <tab class="tab" :selected="2"/>
+    <tab class="tab" :selected="1"/>
   </div>
 </template>
 

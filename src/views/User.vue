@@ -3,7 +3,7 @@
     <div class="main1">
       <img :src="user.img">
       <div class="cont">
-        <h1>{{item.name}}, {{item.age | age }}, {{item.gend | gend}}</h1>
+        <h1>{{user.name}}, {{user.age | age }}, {{user.gend | gend}}</h1>
         <h4>Intro</h4>
         <p class="intro">{{user.description}}</p>
         <div class="line"/>
