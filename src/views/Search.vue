@@ -7,7 +7,12 @@
       </form>
       <h4>Recommend</h4>
       <div class="recommend">
-        <div v-for="(item, index) in recommend" :key="index" class="r-user">
+        <div
+          v-for="(item, index) in recommend"
+          :key="index"
+          class="r-user"
+          @click="$router.push(`/user/${item.id}`)"
+        >
           <img :src="item.img">
           <div class="match">
             <h5>♡{{item.match}}</h5>

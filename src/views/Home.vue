@@ -7,20 +7,26 @@
       </form>
       <h4>Frends</h4>
       <div class="frend">
-        <div v-for="(item, index) in friends" :key="index" class="f-user">
+        <div
+          v-for="(item, index) in friends"
+          :key="index"
+          class="f-user"
+          @click="openChat(item.id)"
+        >
           <img :src="item.img">
           <h2>{{item.name}}</h2>
         </div>
       </div>
     </div>
-    <tab class="tab" :selected="2"/>
+    <tab class="tab" :selected="1"/>
   </div>
 </template>
 
 <script lang="ts">
 import { Vue, Component, Prop, Watch } from 'vue-property-decorator';
 import Tab from '@/component/Tab.vue';
-
+import api from '@/utils/api';
+import { AxiosError, AxiosResponse } from 'axios';
 @Component({
   components: { Tab },
 })
@@ -82,7 +88,7 @@ export default class Home extends Vue {
       ],
     },
     {
-      id: 1,
+      id: 2,
       name: 'otobe',
       img: 'http://placehold.jp/150x150.png',
       age: 1,
@@ -137,7 +143,7 @@ export default class Home extends Vue {
       ],
     },
     {
-      id: 1,
+      id: 3,
       name: 'otobe',
       img: 'http://placehold.jp/150x150.png',
       age: 1,
@@ -192,7 +198,7 @@ export default class Home extends Vue {
       ],
     },
     {
-      id: 1,
+      id: 4,
       name: 'otobe',
       img: 'http://placehold.jp/150x150.png',
       age: 1,
@@ -247,6 +253,25 @@ export default class Home extends Vue {
       ],
     },
   ];
+
+  private me: any = null;
+
+  private created() {
+    api
+      .getMe()
+      .then((res: AxiosResponse) => {
+        this.me = res.data;
+      })
+      .catch((err: AxiosError) => {
+        alert(err);
+      });
+    this.me = { id: 2 };
+  }
+
+  private openChat(id: number) {
+    const cid = this.me.id > id ? `${id}-${this.me.id}` : `${this.me.id}-${id}`;
+    this.$router.push({ name: 'chat', params: { cid } });
+  }
 }
 </script>
 

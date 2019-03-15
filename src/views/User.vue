@@ -1,9 +1,10 @@
 <template>
   <div class="user">
     <div class="main1">
+      <div class="back" @click="$router.go(-1)">＜</div>
       <img :src="user.img">
       <div class="cont">
-        <h1>{{item.name}}, {{item.age | age }}, {{item.gend | gend}}</h1>
+        <h1>{{user.name}}, {{user.age | age }}, {{user.gend | gend}}</h1>
         <h4>Intro</h4>
         <p class="intro">{{user.description}}</p>
         <div class="line"/>
@@ -250,5 +251,13 @@ h4 {
   padding: 0 1.2rem;
   box-sizing: border-box;
   display: flex;
+}
+.back {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  color: rgba(0, 0, 0, 0.3);
+  font-weight: bold;
+  font-size: 1.4rem;
 }
 </style>

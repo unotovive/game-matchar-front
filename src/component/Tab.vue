@@ -1,6 +1,6 @@
 <template>
   <div class="tab">
-    <div>
+    <div @click="$router.push('/home')">
       <svg
         version="1.1"
         xmlns="http://www.w3.org/2000/svg"
@@ -34,7 +34,7 @@
         </g>
       </svg>
     </div>
-    <div>
+    <div @click="$router.push('/search')">
       <svg
         version="1.1"
         xmlns="http://www.w3.org/2000/svg"
@@ -55,7 +55,7 @@
         </g>
       </svg>
     </div>
-    <div>
+    <div @click="$router.push('/request')">
       <svg
         version="1.1"
         xmlns="http://www.w3.org/2000/svg"

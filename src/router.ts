@@ -31,11 +31,13 @@ export default new Router({
       props: true,
     },
     {
-      path: '/chat/:cid',
+      path: '/chat',
       name: 'chat',
       component: () =>
         import(/* webpackChunkName: "home" */ './views/Chat.vue'),
-      props: true,
+      props: (route) => ({
+        cid: String(route.params.cid),
+      }),
     },
     {
       path: '/search',
