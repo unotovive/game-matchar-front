@@ -5,6 +5,7 @@
       <h1>{{name}}</h1>
     </div>
     <div class="main">
+      <datetime></datetime>
       <div v-for="(message, index) in messages" :key="index">
         <div class="message" :class="{ 'isme': message.senderId == myId}">
           <p class="mes">{{message.message}}</p>
