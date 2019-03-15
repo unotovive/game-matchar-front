@@ -1,6 +1,7 @@
 <template>
   <div class="chat">
-    <div class="top">＜戻る
+    <div class="top">
+      <span @click="$router.go(-1)">＜戻る</span>
       <h1>{{name}}</h1>
     </div>
     <div class="main">

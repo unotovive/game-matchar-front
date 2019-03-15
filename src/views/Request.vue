@@ -6,7 +6,7 @@
       <h4>Receiving</h4>
       <div class="reqs">
         <div v-for="(item, index) in recieving" :key="index" class="card">
-          <div class="profile">
+          <div class="profile" @click="$router.push(`/user/${item.id}`)">
             <img :src="item.img">
             <div class="prof-info">
               <h2>{{item.name}}</h2>
@@ -23,7 +23,7 @@
       <h4>Sending</h4>
       <div class="reqs">
         <div v-for="(item, index) in sending" :key="index" class="card">
-          <div class="profile">
+          <div class="profile" @click="$router.push(`/user/${item.id}`)">
             <img :src="item.img">
             <div class="prof-info">
               <h2>{{item.name}}</h2>
