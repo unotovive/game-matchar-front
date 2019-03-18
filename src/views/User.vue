@@ -4,7 +4,10 @@
       <div class="back" @click="$router.go(-1)">＜</div>
       <img :src="user.img">
       <div class="cont">
-        <h1>{{user.name}}, {{user.age | age }}, {{user.gend | gend}}</h1>
+        <div class="name-cont">
+          <h1>{{user.name}}, {{user.age | age }}, {{user.gend | gend}}</h1>
+          <div @click="request" class="req">Send Request</div>
+        </div>
         <h4>Intro</h4>
         <p class="intro">{{user.description}}</p>
         <div class="line"/>
@@ -42,6 +45,8 @@
 <script lang="ts">
 import { Vue, Component, Prop, Watch } from 'vue-property-decorator';
 import GameCard from '@/component/GameCard.vue';
+import api from '@/utils/api';
+import { AxiosError } from 'axios';
 
 @Component({
   components: {
@@ -134,6 +139,17 @@ export default class User extends Vue {
     ],
   };
 
+  public request() {
+    api
+      .request(this.user.id)
+      .then(() => {
+        alert('送信しました');
+      })
+      .catch((err: AxiosError) => {
+        alert(err);
+      });
+  }
+
   get age() {
     switch (this.user.age) {
       case 0:
@@ -185,13 +201,29 @@ img {
   align-items: center;
 }
 h1 {
-  width: 100%;
   font-size: 1.4rem;
   font-weight: bold;
   display: flex;
-  padding: 0 1.2rem;
   box-sizing: border-box;
   margin-bottom: 0.7rem;
+}
+.name-cont {
+  width: 100%;
+  display: flex;
+  padding: 0 1.2rem;
+  justify-content: space-between;
+  align-items: center;
+  box-sizing: border-box;
+}
+.req {
+  padding: 0.3rem;
+  border-radius: 1rem;
+  border: 2px solid rgb(135, 214, 31);
+  background: rgb(135, 214, 31);
+  color: #fff;
+}
+.req:active {
+  background: rgb(125, 204, 21);
 }
 .intro {
   width: 100%;
