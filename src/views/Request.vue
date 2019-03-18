@@ -8,7 +8,7 @@
         <template v-if="recieving.length > 0">
           <div v-for="(item, index) in recieving" :key="index" class="card">
             <div class="profile" @click="$router.push(`/user/${item.id}`)">
-              <img :src="item.image_url">
+              <img :alt="item.name" :src="item.image_url">
               <div class="prof-info">
                 <h2>{{item.name}}</h2>
                 <p>{{item.context}}</p>
@@ -30,7 +30,7 @@
         <template v-if="sending.length > 0">
           <div v-for="(item, index) in sending" :key="index" class="card">
             <div class="profile" @click="$router.push(`/user/${item.id}`)">
-              <img :src="item.image_url">
+              <img :src="item.img">
               <div class="prof-info">
                 <h2>{{item.name}}</h2>
                 <p>{{item.context}}</p>

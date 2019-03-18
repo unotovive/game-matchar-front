@@ -13,7 +13,7 @@
     </div>
     <div class="bot">
       <h2>+</h2>
-      <input v-model="mes" type="text">
+      <input v-model="mes" aria-label="message" type="text">
       <div @click="add" class="send">送信</div>
     </div>
   </div>

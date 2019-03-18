@@ -1,12 +1,12 @@
 <template>
   <div class="user">
-    <img class="bg" src="@/assets/logo.png">
+    <img class="bg" alt="bg" src="@/assets/logo.png">
     <div class="wrapper">
       <div class="top">
         <font-awesome-icon @click="$router.go(-1)" icon="arrow-left"/>
       </div>
       <div class="prof-info">
-        <img class="prof-img" :src="user.user.image_url">
+        <img class="prof-img" :alt="user.user.name" :src="user.user.image_url">
         <div class="prof-t">
           <h1
             class="prof-tt"
