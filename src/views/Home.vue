@@ -26,233 +26,12 @@
 import { Vue, Component, Prop, Watch } from 'vue-property-decorator';
 import Tab from '@/component/Tab.vue';
 import api from '@/utils/api';
-import { AxiosError, AxiosResponse } from 'axios';
+import { AxiosError, AxiosResponse, AxiosRequestConfig } from 'axios';
 @Component({
   components: { Tab },
 })
 export default class Home extends Vue {
-  private friends: any[] = [
-    {
-      id: 1,
-      name: 'otobe',
-      img: 'http://placehold.jp/150x150.png',
-      age: 1,
-      gend: 0,
-      match: 78,
-      description:
-        'ここには長めのユーザー説明っぽい文章的な何かが入る気がするんですよ、おそらく。',
-      playTime: ['じゅうじ', 'じゅうにじ'],
-      games: [
-        {
-          id: '1',
-          name: 'Global Brand Coordinator',
-          img: 'http://placehold.jp/150x150.png',
-        },
-        {
-          id: '2',
-          name: 'Global Quality Administrator',
-          img: 'http://placehold.jp/150x150.png',
-        },
-        {
-          id: '3',
-          name: 'Central Infrastructure Analyst',
-          img: 'http://placehold.jp/150x150.png',
-        },
-        {
-          id: '4',
-          name: 'Legacy Functionality Officer',
-          img: 'http://placehold.jp/150x150.png',
-        },
-      ],
-      tags: [
-        {
-          id: '1',
-          name: 'deliverables',
-        },
-        {
-          id: '2',
-          name: 'Future',
-        },
-        {
-          id: '3',
-          name: 'Fiji',
-        },
-        {
-          id: '4',
-          name: 'SSL',
-        },
-        {
-          id: '5',
-          name: 'Chair',
-        },
-      ],
-    },
-    {
-      id: 2,
-      name: 'otobe',
-      img: 'http://placehold.jp/150x150.png',
-      age: 1,
-      gend: 0,
-      match: 78,
-      description:
-        'ここには長めのユーザー説明っぽい文章的な何かが入る気がするんですよ、おそらく。',
-      playTime: ['じゅうじ', 'じゅうにじ'],
-      games: [
-        {
-          id: '1',
-          name: 'Global Brand Coordinator',
-          img: 'http://placehold.jp/150x150.png',
-        },
-        {
-          id: '2',
-          name: 'Global Quality Administrator',
-          img: 'http://placehold.jp/150x150.png',
-        },
-        {
-          id: '3',
-          name: 'Central Infrastructure Analyst',
-          img: 'http://placehold.jp/150x150.png',
-        },
-        {
-          id: '4',
-          name: 'Legacy Functionality Officer',
-          img: 'http://placehold.jp/150x150.png',
-        },
-      ],
-      tags: [
-        {
-          id: '1',
-          name: 'deliverables',
-        },
-        {
-          id: '2',
-          name: 'Future',
-        },
-        {
-          id: '3',
-          name: 'Fiji',
-        },
-        {
-          id: '4',
-          name: 'SSL',
-        },
-        {
-          id: '5',
-          name: 'Chair',
-        },
-      ],
-    },
-    {
-      id: 3,
-      name: 'otobe',
-      img: 'http://placehold.jp/150x150.png',
-      age: 1,
-      gend: 0,
-      match: 78,
-      description:
-        'ここには長めのユーザー説明っぽい文章的な何かが入る気がするんですよ、おそらく。',
-      playTime: ['じゅうじ', 'じゅうにじ'],
-      games: [
-        {
-          id: '1',
-          name: 'Global Brand Coordinator',
-          img: 'http://placehold.jp/150x150.png',
-        },
-        {
-          id: '2',
-          name: 'Global Quality Administrator',
-          img: 'http://placehold.jp/150x150.png',
-        },
-        {
-          id: '3',
-          name: 'Central Infrastructure Analyst',
-          img: 'http://placehold.jp/150x150.png',
-        },
-        {
-          id: '4',
-          name: 'Legacy Functionality Officer',
-          img: 'http://placehold.jp/150x150.png',
-        },
-      ],
-      tags: [
-        {
-          id: '1',
-          name: 'deliverables',
-        },
-        {
-          id: '2',
-          name: 'Future',
-        },
-        {
-          id: '3',
-          name: 'Fiji',
-        },
-        {
-          id: '4',
-          name: 'SSL',
-        },
-        {
-          id: '5',
-          name: 'Chair',
-        },
-      ],
-    },
-    {
-      id: 4,
-      name: 'otobe',
-      img: 'http://placehold.jp/150x150.png',
-      age: 1,
-      gend: 0,
-      match: 78,
-      description:
-        'ここには長めのユーザー説明っぽい文章的な何かが入る気がするんですよ、おそらく。',
-      playTime: ['じゅうじ', 'じゅうにじ'],
-      games: [
-        {
-          id: '1',
-          name: 'Global Brand Coordinator',
-          img: 'http://placehold.jp/150x150.png',
-        },
-        {
-          id: '2',
-          name: 'Global Quality Administrator',
-          img: 'http://placehold.jp/150x150.png',
-        },
-        {
-          id: '3',
-          name: 'Central Infrastructure Analyst',
-          img: 'http://placehold.jp/150x150.png',
-        },
-        {
-          id: '4',
-          name: 'Legacy Functionality Officer',
-          img: 'http://placehold.jp/150x150.png',
-        },
-      ],
-      tags: [
-        {
-          id: '1',
-          name: 'deliverables',
-        },
-        {
-          id: '2',
-          name: 'Future',
-        },
-        {
-          id: '3',
-          name: 'Fiji',
-        },
-        {
-          id: '4',
-          name: 'SSL',
-        },
-        {
-          id: '5',
-          name: 'Chair',
-        },
-      ],
-    },
-  ];
+  private friends: any[] = [];
 
   private me: any = null;
 
@@ -265,7 +44,14 @@ export default class Home extends Vue {
       .catch((err: AxiosError) => {
         alert(err);
       });
-    this.me = { id: 2 };
+    api
+      .getFriendList()
+      .then((res: AxiosResponse) => {
+        this.friends = res.data;
+      })
+      .catch((err: AxiosError) => {
+        alert(err);
+      });
   }
 
   private openChat(id: number) {
