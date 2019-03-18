@@ -3,18 +3,18 @@
     <div class="container" v-if="mode === 'login'">
       <h1>GameMatchar</h1>
       <img src="@/assets/mark.png">
-      <input type="email" placeholder="email">
-      <input type="password" placeholder="password">
-      <div class="button">Login</div>
+      <input v-model="email" type="email" placeholder="email">
+      <input v-model="password" type="password" placeholder="password">
+      <div @click="login" class="button">Login</div>
       <p @click="mode = 'register' ">Register</p>
     </div>
     <div class="container" v-if="mode === 'register'">
       <h1>GameMatchar</h1>
       <img src="@/assets/mark.png">
-      <input type="email" placeholder="email">
-      <input type="password" placeholder="password">
-      <input type="password" placeholder="Confirm password">
-      <div class="button">Register</div>
+      <input v-model="email" type="email" placeholder="email">
+      <input v-model="password" type="password" placeholder="password">
+      <input v-model="passconf" type="password" placeholder="Confirm password">
+      <div @click="register" class="button">Register</div>
       <p @click="mode = 'login' ">Login</p>
     </div>
   </div>
@@ -22,9 +22,37 @@
 
 <script lang="ts">
 import { Vue, Component, Prop, Watch } from 'vue-property-decorator';
+import api from '@/utils/api';
+import { AxiosError, AxiosResponse } from 'axios';
+
 @Component({})
 export default class Login extends Vue {
   private mode: string = 'login';
+  private email: string = '';
+  private password: string = '';
+  private passconf: string = '';
+
+  public login() {
+    api
+      .login(this.email, this.password)
+      .then((res: AxiosResponse) => {
+        if (res.data && res.data.isFirstLogin) {
+          this.$router.push('/signup');
+        } else {
+          this.$router.push('/home');
+        }
+      })
+      .catch((err: AxiosError) => {
+        alert(err);
+      });
+  }
+  public register() {
+    if (this.password === this.passconf) {
+      api.register(this.email, this.password);
+    } else {
+      alert('passwordが一致しません');
+    }
+  }
 }
 </script>
 
@@ -51,8 +79,9 @@ input {
   height: 100%;
   background: rgb(118, 184, 82);
   background: linear-gradient(
-    90deg,
-    rgba(118, 184, 82, 1) 0%,
+    rgba(255, 255, 255, 1) 0%,
+    rgb(175, 209, 156) 3%,
+    rgba(118, 184, 82, 1) 5%,
     rgba(141, 194, 111, 1) 100%
   );
   color: #fff;
