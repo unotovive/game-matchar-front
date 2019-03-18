@@ -8,9 +8,12 @@
     <div class="main">
       <div class="img-name">
         <img src="@/assets/kuma3.jpeg">
-        <input type="text" placeholder="ニックネームを入力">
+        <input type="text" v-model="name" placeholder="ニックネームを入力">
       </div>
-      <textarea placeholder="自己紹介を入力。例：ゆるくやっていきたいです！LoLメインでやっているので誘っていただけると嬉しいです。"/>
+      <textarea
+        v-model="context"
+        placeholder="自己紹介を入力。例：ゆるくやっていきたいです！LoLメインでやっているので誘っていただけると嬉しいです。"
+      />
       <div class="field" style="height: auto;">
         <h2>私のゲーム</h2>
         <div class="game-list">
@@ -63,45 +66,64 @@
           <ul>
             <li class="list_item">
               <label>
-                <input type="checkbox" class="option-input05" checked>
+                <input type="checkbox" v-model="activeTimes['1']" class="option-input05">
                 平日午前中
               </label>
             </li>
             <li class="list_item">
               <label>
-                <input type="checkbox" class="option-input05">
+                <input type="checkbox" v-model="activeTimes['2']" class="option-input05">
                 平日夕方
               </label>
             </li>
             <li class="list_item">
               <label>
-                <input type="checkbox" class="option-input05">
+                <input type="checkbox" v-model="activeTimes['3']" class="option-input05">
                 平日夜
               </label>
             </li>
             <li class="list_item">
               <label>
-                <input type="checkbox" class="option-input05">
-                土日午前中
+                <input type="checkbox" v-model="activeTimes['4']" class="option-input05">
+                休日午前中
               </label>
             </li>
             <li class="list_item">
               <label>
-                <input type="checkbox" class="option-input05">
-                土日夕方
+                <input type="checkbox" v-model="activeTimes['5']" class="option-input05">
+                休日夕方
               </label>
             </li>
             <li class="list_item">
               <label>
-                <input type="checkbox" class="option-input05">
-                土日夜
+                <input type="checkbox" v-model="activeTimes['6']" class="option-input05">
+                休日夜
+              </label>
+            </li>
+            <li class="list_item">
+              <label>
+                <input type="checkbox" v-model="activeTimes['7']" class="option-input05">
+                深夜帯
+              </label>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="field" style="height: auto;">
+        <h2>ボイスチャット</h2>
+        <div class="cp_ipcheck">
+          <ul>
+            <li class="list_item">
+              <label>
+                <input type="checkbox" v-model="VCflag" class="option-input05">
+                できる
               </label>
             </li>
           </ul>
         </div>
       </div>
       <div class="bot">
-        <div class="button" @click="$emit('select', selected)">次へ</div>
+        <div class="button" @click="submit">次へ</div>
       </div>
     </div>
   </div>
@@ -110,8 +132,9 @@
 <script lang="ts">
 import { Vue, Component, Prop, Watch } from 'vue-property-decorator';
 import Picker from '@/component/Picker.vue';
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import GameCard from '@/component/GameCard.vue';
+import api from '@/utils/api';
 
 @Component({
   components: {
@@ -129,6 +152,19 @@ export default class Signup extends Vue {
   private age: number | null = null;
   private gend: number | null = null;
 
+  private name: string = '';
+  private context: string = '';
+  private VCflag: boolean = false;
+  private activeTimes: any = {
+    1: false,
+    2: false,
+    3: false,
+    4: false,
+    5: false,
+    6: false,
+    7: false,
+  };
+
   private showPicker: boolean = false;
   private showGPicker: boolean = false;
 
@@ -142,6 +178,32 @@ export default class Signup extends Vue {
       .get('https://5c86094ecc034a0014bd24ae.mockapi.io/games')
       .then((res: any) => {
         this.games = res.data;
+      });
+  }
+  public submit() {
+    const activeTimes: number[] = [];
+    for (const k in this.activeTimes) {
+      if (this.activeTimes[k]) {
+        activeTimes.push(Number(k));
+      }
+    }
+    const params = {
+      name: this.name,
+      context: this.context,
+      VCflag: this.VCflag ? '1' : '0',
+      sex: String(this.gend),
+      age: String(this.age),
+      games: this.selectedGames.map((game: any) => Number(game.id)),
+      tags: this.selectedTags.map((tag: any) => Number(tag.id)),
+      activeTimes,
+    };
+    api
+      .signUp(params)
+      .then(() => {
+        this.$router.push('/home');
+      })
+      .catch((err: AxiosError) => {
+        alert(err);
       });
   }
   public select(selected: any[]) {
