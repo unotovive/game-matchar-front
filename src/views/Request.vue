@@ -5,36 +5,40 @@
       <div style="margin-top: 1rem;"/>
       <h4>Receiving</h4>
       <div class="reqs">
-        <div v-for="(item, index) in recieving" :key="index" class="card">
-          <div class="profile" @click="$router.push(`/user/${item.id}`)">
-            <img :src="item.img">
-            <div class="prof-info">
-              <h2>{{item.name}}</h2>
-              <p>{{item.description}}</p>
+        <template v-if="recieving.length > 0">
+          <div v-for="(item, index) in recieving" :key="index" class="card">
+            <div class="profile" @click="$router.push(`/user/${item.id}`)">
+              <img :src="item.img">
+              <div class="prof-info">
+                <h2>{{item.name}}</h2>
+                <p>{{item.description}}</p>
+              </div>
+            </div>
+            <div class="line"/>
+            <div class="button">
+              <div class="c-b">×</div>
+              <div class="a-b">✔︎</div>
             </div>
           </div>
-          <div class="line"/>
-          <div class="button">
-            <div class="c-b">×</div>
-            <div class="a-b">✔︎</div>
-          </div>
-        </div>
+        </template>
       </div>
       <h4>Sending</h4>
       <div class="reqs">
-        <div v-for="(item, index) in sending" :key="index" class="card">
-          <div class="profile" @click="$router.push(`/user/${item.id}`)">
-            <img :src="item.img">
-            <div class="prof-info">
-              <h2>{{item.name}}</h2>
-              <p>{{item.description}}</p>
+        <template v-if="sending.length > 0">
+          <div v-for="(item, index) in sending" :key="index" class="card">
+            <div class="profile" @click="$router.push(`/user/${item.id}`)">
+              <img :src="item.img">
+              <div class="prof-info">
+                <h2>{{item.name}}</h2>
+                <p>{{item.description}}</p>
+              </div>
+            </div>
+            <div class="line"/>
+            <div class="button">
+              <div class="c-b-l">cancel</div>
             </div>
           </div>
-          <div class="line"/>
-          <div class="button">
-            <div class="c-b-l">cancel</div>
-          </div>
-        </div>
+        </template>
       </div>
     </div>
     <tab class="tab" :selected="3"/>
@@ -44,50 +48,27 @@
 <script lang="ts">
 import { Vue, Component, Prop, Watch } from 'vue-property-decorator';
 import Tab from '@/component/Tab.vue';
+import { AxiosResponse, AxiosError } from 'axios';
+import api from '@/utils/api';
 
 @Component({
   components: { Tab },
 })
 export default class Home extends Vue {
-  private recieving: any[] = [
-    {
-      id: 1,
-      name: 'おとべ',
-      img: 'http://placekitten.com/150/150',
-      description:
-        'むかしむかしあるところにたけとりのおきなといふものありけり。おじいさんは山へ芝刈りに、おばあさんは川へ洗濯に行きました。かの邪智暴虐の王を許してはならないと決意した。',
-    },
-    {
-      id: 1,
-      name: 'おとべ',
-      img: 'http://placekitten.com/150/150',
-      description:
-        'むかしむかしあるところにたけとりのおきなといふものありけり。おじいさんは山へ芝刈りに、おばあさんは川へ洗濯に行きました。かの邪智暴虐の王を許してはならないと決意した。',
-    },
-    {
-      id: 1,
-      name: 'おとべ',
-      img: 'http://placekitten.com/150/150',
-      description:
-        'むかしむかしあるところにたけとりのおきなといふものありけり。おじいさんは山へ芝刈りに、おばあさんは川へ洗濯に行きました。かの邪智暴虐の王を許してはならないと決意した。',
-    },
-  ];
-  private sending: any[] = [
-    {
-      id: 1,
-      name: 'おとべ',
-      img: 'http://placekitten.com/150/150',
-      description:
-        'むかしむかしあるところにたけとりのおきなといふものありけり。おじいさんは山へ芝刈りに、おばあさんは川へ洗濯に行きました。かの邪智暴虐の王を許してはならないと決意した。',
-    },
-    {
-      id: 1,
-      name: 'おとべ',
-      img: 'http://placekitten.com/150/150',
-      description:
-        'むかしむかしあるところにたけとりのおきなといふものありけり。おじいさんは山へ芝刈りに、おばあさんは川へ洗濯に行きました。かの邪智暴虐の王を許してはならないと決意した。',
-    },
-  ];
+  private recieving: any[] = [];
+  private sending: any[] = [];
+
+  public created() {
+    api
+      .getRequestList()
+      .then((res: AxiosResponse) => {
+        this.recieving = res.data;
+        this.sending = res.data;
+      })
+      .catch((err: AxiosError) => {
+        alert(err);
+      });
+  }
 }
 </script>
 
