@@ -37,7 +37,8 @@ export default class Login extends Vue {
       .login(this.email, this.password)
       .then((res: AxiosResponse) => {
         localStorage.setItem('key', 'Bearer ' + res.data.access_token);
-        if (res.data && res.data.isFirstLogin) {
+        if (res.data && res.data.isFirstLogin === true) {
+          console.log(res.data.isFirstLogin);
           this.$router.push('/signup');
         } else {
           this.$router.push('/home');
