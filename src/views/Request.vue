@@ -16,8 +16,8 @@
             </div>
             <div class="line"/>
             <div class="button">
-              <div class="c-b">×</div>
-              <div class="a-b">✔︎</div>
+              <div class="c-b" @click="unapprove(item.id)">×</div>
+              <div class="a-b" @click="approve(item.id)">✔︎</div>
             </div>
           </div>
         </template>
@@ -68,6 +68,23 @@ export default class Home extends Vue {
       .catch((err: AxiosError) => {
         alert(err);
       });
+  }
+
+  public approve(id: number) {
+    const params = {
+      sender_id: id,
+    };
+    api
+      .approve(params)
+      .then(() => {
+        alert('承認しました');
+      })
+      .catch((err: AxiosError) => {
+        alert(err);
+      });
+  }
+  public unapprove(id: number) {
+    alert('未実装☺️');
   }
 }
 </script>

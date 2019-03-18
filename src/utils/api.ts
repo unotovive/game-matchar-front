@@ -23,7 +23,6 @@ export default {
         Authorization: localStorage.getItem('key'),
       },
     };
-    console.log(params);
     return axios.post(`${url}/signup`, params, config);
   },
   getMe() {
@@ -49,5 +48,21 @@ export default {
       },
     };
     return axios.get(`${url}/request_list`, config);
+  },
+  request(params: any) {
+    const config = {
+      headers: {
+        Authorization: localStorage.getItem('key'),
+      },
+    };
+    return axios.post(`${url}/request`, params, config);
+  },
+  approve(params: any) {
+    const config = {
+      headers: {
+        Authorization: localStorage.getItem('key'),
+      },
+    };
+    return axios.put(`${url}/approve`, params, config);
   },
 };
