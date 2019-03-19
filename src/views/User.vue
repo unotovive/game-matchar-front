@@ -34,7 +34,7 @@
         <div class="tag-list">
           <div class="tags" v-if="user.tag.length > 0">
             <template>
-              <div v-for="(tag, index) in user.tag" :key="index" class="tag">{{tag.name}}</div>
+              <div v-for="(tag, index) in user.tag" :key="index" class="tag">{{tag.tag}}</div>
             </template>
           </div>
           <div v-else>タグが設定されていません。</div>

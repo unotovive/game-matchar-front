@@ -65,6 +65,22 @@ export default {
     };
     return axios.put(`${url}/approve`, params, config);
   },
+  reject(params: any) {
+    const config = {
+      headers: {
+        Authorization: localStorage.getItem('key'),
+      },
+    };
+    return axios.put(`${url}/reject`, params, config);
+  },
+  cancel(params: any) {
+    const config = {
+      headers: {
+        Authorization: localStorage.getItem('key'),
+      },
+    };
+    return axios.put(`${url}/cancel`, params, config);
+  },
   getUser(id: number) {
     const config = {
       headers: {

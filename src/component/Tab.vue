@@ -97,7 +97,7 @@
         </g>
       </svg>
     </div>
-    <div>
+    <div @click="gome()">
       <svg
         version="1.1"
         xmlns="http://www.w3.org/2000/svg"
@@ -148,10 +148,20 @@
 </template>
 <script lang="ts">
 import { Vue, Component, Prop, Watch } from 'vue-property-decorator';
+import { AxiosResponse } from 'axios';
+import api from '@/utils/api';
+
 @Component({})
 export default class Tab extends Vue {
   @Prop({ default: 1 })
   private selected?: number;
+
+  public gome() {
+    api.getMe().then((res: AxiosResponse) => {
+      const me = res.data.id;
+      this.$router.push(`/user/${me}`);
+    });
+  }
 }
 </script>
 <style lang="scss" scoped>
