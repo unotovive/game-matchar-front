@@ -176,7 +176,7 @@ export default class Signup extends Vue {
       })
       .catch((err: AxiosError) => {
         alert(err);
-        if (err.code === '401') {
+        if (err.response!.status === 401) {
           this.$router.push('/');
         }
       });
@@ -187,7 +187,7 @@ export default class Signup extends Vue {
       })
       .catch((err: AxiosError) => {
         alert(err);
-        if (err.code === '401') {
+        if (err.response!.status === 401) {
           this.$router.push('/');
         }
       });
@@ -216,7 +216,7 @@ export default class Signup extends Vue {
       })
       .catch((err: AxiosError) => {
         alert(err);
-        if (err.code === '401') {
+        if (err.response!.status === 401) {
           this.$router.push('/');
         }
       });

@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 // const url = 'http://192.168.200.14:3500/api/v1';
-const url = 'http://ujimatcha.dddd20.info/api/v1';
+const url = 'https://ujimatcha.dddd20.info/api/v1';
 export default {
   login(email: string, password: string) {
     const param = {

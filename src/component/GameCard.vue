@@ -20,7 +20,7 @@ export default class GameCard extends Vue {
 .game-card {
   width: 110px;
   height: 150px;
-  border-radius: 10px;
+  border-radius: 5px;
   box-shadow: 0px 0px 6px 3px rgba(0, 0, 0, 0.05);
   margin: 0.3em;
   box-sizing: border-box;

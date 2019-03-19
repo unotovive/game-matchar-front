@@ -42,6 +42,7 @@ export default class Home extends Vue {
         this.me = res.data;
       })
       .catch((err: AxiosError) => {
+        alert(err);
         if (err.response!.status === 401) {
           this.$router.push('/');
         }
@@ -52,8 +53,8 @@ export default class Home extends Vue {
         this.friends = res.data.friends;
       })
       .catch((err: AxiosError) => {
-        // alert(err);
-        if (err.code === '401') {
+        alert(err);
+        if (err.response!.status === 401) {
           this.$router.push('/');
         }
       });
