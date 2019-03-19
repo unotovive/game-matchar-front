@@ -3,9 +3,9 @@
     <div class="container">
       <h1>Home</h1>
       <form class="search_container">
-        <input type="text" placeholder="search">
+        <input type="text" aria-label="search" placeholder="search">
       </form>
-      <h4>Frends</h4>
+      <h4>Friends</h4>
       <div class="frend">
         <div
           v-for="(item, index) in friends"
@@ -13,7 +13,7 @@
           class="f-user"
           @click="openChat(item.id)"
         >
-          <img :src="item.img">
+          <img :alt="item.name" :src="item.image_url">
           <h2>{{item.name}}</h2>
         </div>
       </div>
@@ -42,15 +42,20 @@ export default class Home extends Vue {
         this.me = res.data;
       })
       .catch((err: AxiosError) => {
-        alert(err);
+        if (err.response!.status === 401) {
+          this.$router.push('/');
+        }
       });
     api
       .getFriendList()
       .then((res: AxiosResponse) => {
-        this.friends = res.data;
+        this.friends = res.data.friends;
       })
       .catch((err: AxiosError) => {
-        alert(err);
+        // alert(err);
+        if (err.code === '401') {
+          this.$router.push('/');
+        }
       });
   }
 

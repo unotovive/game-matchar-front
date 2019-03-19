@@ -176,6 +176,9 @@ export default class Signup extends Vue {
       })
       .catch((err: AxiosError) => {
         alert(err);
+        if (err.code === '401') {
+          this.$router.push('/');
+        }
       });
     api
       .getGames()
@@ -184,6 +187,9 @@ export default class Signup extends Vue {
       })
       .catch((err: AxiosError) => {
         alert(err);
+        if (err.code === '401') {
+          this.$router.push('/');
+        }
       });
   }
   public submit() {
@@ -210,6 +216,9 @@ export default class Signup extends Vue {
       })
       .catch((err: AxiosError) => {
         alert(err);
+        if (err.code === '401') {
+          this.$router.push('/');
+        }
       });
   }
   public select(selected: any[]) {

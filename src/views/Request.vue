@@ -8,10 +8,10 @@
         <template v-if="recieving.length > 0">
           <div v-for="(item, index) in recieving" :key="index" class="card">
             <div class="profile" @click="$router.push(`/user/${item.id}`)">
-              <img :src="item.img">
+              <img :src="item.image_url">
               <div class="prof-info">
                 <h2>{{item.name}}</h2>
-                <p>{{item.description}}</p>
+                <p>{{item.context}}</p>
               </div>
             </div>
             <div class="line"/>
@@ -21,16 +21,19 @@
             </div>
           </div>
         </template>
+        <template v-else>
+          <p style="padding-top: 1rem;">承認待ちのリクエストはありません。</p>
+        </template>
       </div>
       <h4>Sending</h4>
       <div class="reqs">
         <template v-if="sending.length > 0">
           <div v-for="(item, index) in sending" :key="index" class="card">
             <div class="profile" @click="$router.push(`/user/${item.id}`)">
-              <img :src="item.img">
+              <img :src="item.image_url">
               <div class="prof-info">
                 <h2>{{item.name}}</h2>
-                <p>{{item.description}}</p>
+                <p>{{item.context}}</p>
               </div>
             </div>
             <div class="line"/>
@@ -38,6 +41,9 @@
               <div class="c-b-l">cancel</div>
             </div>
           </div>
+        </template>
+        <template v-else>
+          <p style="padding-top: 1rem;">送信中のリクエストはありません。</p>
         </template>
       </div>
     </div>
@@ -62,11 +68,14 @@ export default class Home extends Vue {
     api
       .getRequestList()
       .then((res: AxiosResponse) => {
-        this.recieving = res.data;
-        this.sending = res.data;
+        this.recieving = res.data.requests;
+        this.sending = res.data.sending_request;
       })
       .catch((err: AxiosError) => {
         alert(err);
+        if (err.code === '401') {
+          this.$router.push('/');
+        }
       });
   }
 
@@ -81,6 +90,9 @@ export default class Home extends Vue {
       })
       .catch((err: AxiosError) => {
         alert(err);
+        if (err.code === '401') {
+          this.$router.push('/');
+        }
       });
   }
   public unapprove(id: number) {

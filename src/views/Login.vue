@@ -49,7 +49,9 @@ export default class Login extends Vue {
   }
   public register() {
     if (this.password === this.passconf) {
-      api.register(this.email, this.password);
+      api.register(this.email, this.password).then(() => {
+        this.login();
+      });
     } else {
       alert('passwordが一致しません');
     }

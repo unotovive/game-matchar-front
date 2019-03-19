@@ -57,6 +57,9 @@ export default class ChatList extends Vue {
       })
       .catch((err: AxiosError) => {
         alert(err);
+        if (err.code === '401') {
+          this.$router.push('/');
+        }
       });
   }
 }

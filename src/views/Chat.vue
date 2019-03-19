@@ -22,6 +22,8 @@
 <script lang="ts">
 import { Vue, Component, Prop, Watch } from 'vue-property-decorator';
 import { db } from '@/firebase';
+import { AxiosResponse, AxiosError } from 'axios';
+import api from '@/utils/api';
 
 @Component({})
 export default class Chat extends Vue {
@@ -38,9 +40,17 @@ export default class Chat extends Vue {
   private mes: string = '';
 
   public created() {
-    this.myId = localStorage.getItem('id')
-      ? Number(localStorage.getItem('id'))
-      : 0;
+    api
+      .getMe()
+      .then((res: AxiosResponse) => {
+        this.myId = res.data.id;
+      })
+      .catch((err: AxiosError) => {
+        alert(err);
+        if (err.code === '401') {
+          this.$router.push('/');
+        }
+      });
     this.$bind(
       'messages',
       db
