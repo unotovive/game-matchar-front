@@ -8,17 +8,17 @@
       <h4>Recommend</h4>
       <div class="recommend">
         <div
-          v-for="(item, index) in recommend"
+          v-for="(item, index) in rc"
           :key="index"
           class="r-user"
           @click="$router.push(`/user/${item.id}`)"
         >
-          <img :src="item.img">
+          <img :src="item.image_url">
           <div class="match">
-            <h5>♡{{item.match}}</h5>
+            <h5>♡{{item.match | int}}</h5>
           </div>
           <h2>{{item.name}}</h2>
-          <p>{{item.description}}</p>
+          <p>{{item.context}}</p>
         </div>
       </div>
     </div>
@@ -29,238 +29,35 @@
 <script lang="ts">
 import { Vue, Component, Prop, Watch } from 'vue-property-decorator';
 import Tab from '@/component/Tab.vue';
+import { AxiosResponse, AxiosError } from 'axios';
+import api from '@/utils/api';
 
 @Component({
   components: {
     Tab,
   },
+  filters: {
+    int(value: number) {
+      return Math.round(value);
+    },
+  },
 })
 export default class ChatList extends Vue {
-  private recommend: any[] = [
-    {
-      id: 1,
-      name: 'otobe',
-      img: 'http://placehold.jp/150x150.png',
-      age: 1,
-      gend: 0,
-      match: 78,
-      description:
-        'ここには長めのユーザー説明っぽい文章的な何かが入る気がするんですよ、おそらく。',
-      playTime: ['じゅうじ', 'じゅうにじ'],
-      games: [
-        {
-          id: '1',
-          name: 'Global Brand Coordinator',
-          img: 'http://placehold.jp/150x150.png',
-        },
-        {
-          id: '2',
-          name: 'Global Quality Administrator',
-          img: 'http://placehold.jp/150x150.png',
-        },
-        {
-          id: '3',
-          name: 'Central Infrastructure Analyst',
-          img: 'http://placehold.jp/150x150.png',
-        },
-        {
-          id: '4',
-          name: 'Legacy Functionality Officer',
-          img: 'http://placehold.jp/150x150.png',
-        },
-      ],
-      tags: [
-        {
-          id: '1',
-          name: 'deliverables',
-        },
-        {
-          id: '2',
-          name: 'Future',
-        },
-        {
-          id: '3',
-          name: 'Fiji',
-        },
-        {
-          id: '4',
-          name: 'SSL',
-        },
-        {
-          id: '5',
-          name: 'Chair',
-        },
-      ],
-    },
-    {
-      id: 1,
-      name: 'otobe',
-      img: 'http://placehold.jp/150x150.png',
-      age: 1,
-      gend: 0,
-      match: 78,
-      description:
-        'ここには長めのユーザー説明っぽい文章的な何かが入る気がするんですよ、おそらく。',
-      playTime: ['じゅうじ', 'じゅうにじ'],
-      games: [
-        {
-          id: '1',
-          name: 'Global Brand Coordinator',
-          img: 'http://placehold.jp/150x150.png',
-        },
-        {
-          id: '2',
-          name: 'Global Quality Administrator',
-          img: 'http://placehold.jp/150x150.png',
-        },
-        {
-          id: '3',
-          name: 'Central Infrastructure Analyst',
-          img: 'http://placehold.jp/150x150.png',
-        },
-        {
-          id: '4',
-          name: 'Legacy Functionality Officer',
-          img: 'http://placehold.jp/150x150.png',
-        },
-      ],
-      tags: [
-        {
-          id: '1',
-          name: 'deliverables',
-        },
-        {
-          id: '2',
-          name: 'Future',
-        },
-        {
-          id: '3',
-          name: 'Fiji',
-        },
-        {
-          id: '4',
-          name: 'SSL',
-        },
-        {
-          id: '5',
-          name: 'Chair',
-        },
-      ],
-    },
-    {
-      id: 1,
-      name: 'otobe',
-      img: 'http://placehold.jp/150x150.png',
-      age: 1,
-      gend: 0,
-      match: 78,
-      description:
-        'ここには長めのユーザー説明っぽい文章的な何かが入る気がするんですよ、おそらく。',
-      playTime: ['じゅうじ', 'じゅうにじ'],
-      games: [
-        {
-          id: '1',
-          name: 'Global Brand Coordinator',
-          img: 'http://placehold.jp/150x150.png',
-        },
-        {
-          id: '2',
-          name: 'Global Quality Administrator',
-          img: 'http://placehold.jp/150x150.png',
-        },
-        {
-          id: '3',
-          name: 'Central Infrastructure Analyst',
-          img: 'http://placehold.jp/150x150.png',
-        },
-        {
-          id: '4',
-          name: 'Legacy Functionality Officer',
-          img: 'http://placehold.jp/150x150.png',
-        },
-      ],
-      tags: [
-        {
-          id: '1',
-          name: 'deliverables',
-        },
-        {
-          id: '2',
-          name: 'Future',
-        },
-        {
-          id: '3',
-          name: 'Fiji',
-        },
-        {
-          id: '4',
-          name: 'SSL',
-        },
-        {
-          id: '5',
-          name: 'Chair',
-        },
-      ],
-    },
-    {
-      id: 1,
-      name: 'otobe',
-      img: 'http://placehold.jp/150x150.png',
-      age: 1,
-      gend: 0,
-      match: 78,
-      description:
-        'ここには長めのユーザー説明っぽい文章的な何かが入る気がするんですよ、おそらく。',
-      playTime: ['じゅうじ', 'じゅうにじ'],
-      games: [
-        {
-          id: '1',
-          name: 'Global Brand Coordinator',
-          img: 'http://placehold.jp/150x150.png',
-        },
-        {
-          id: '2',
-          name: 'Global Quality Administrator',
-          img: 'http://placehold.jp/150x150.png',
-        },
-        {
-          id: '3',
-          name: 'Central Infrastructure Analyst',
-          img: 'http://placehold.jp/150x150.png',
-        },
-        {
-          id: '4',
-          name: 'Legacy Functionality Officer',
-          img: 'http://placehold.jp/150x150.png',
-        },
-      ],
-      tags: [
-        {
-          id: '1',
-          name: 'deliverables',
-        },
-        {
-          id: '2',
-          name: 'Future',
-        },
-        {
-          id: '3',
-          name: 'Fiji',
-        },
-        {
-          id: '4',
-          name: 'SSL',
-        },
-        {
-          id: '5',
-          name: 'Chair',
-        },
-      ],
-    },
-  ];
+  private rc: any[] = [];
 
   public alert(mes: string) {
     alert(mes);
+  }
+
+  public created() {
+    api
+      .getRC()
+      .then((res: AxiosResponse) => {
+        this.rc = res.data.recommendation;
+      })
+      .catch((err: AxiosError) => {
+        alert(err);
+      });
   }
 }
 </script>

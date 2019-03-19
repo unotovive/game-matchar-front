@@ -35,7 +35,6 @@ const router = new Router({
       name: 'user',
       component: () =>
         import(/* webpackChunkName: "user" */ './views/User.vue'),
-
       props: true,
       meta: {
         requiresAuth: true,
@@ -83,19 +82,19 @@ const router = new Router({
   ],
 });
 
-router.beforeEach((to, from, next) => {
-  if (to.matched.some((record) => record.meta.requiresAuth)) {
-    api
-      .getMe()
-      .then(() => {
-        next();
-      })
-      .catch(() => {
-        next('/');
-      });
-  } else {
-    next();
-  }
-});
+// router.beforeEach((to, from, next) => {
+//   if (to.matched.some((record) => record.meta.requiresAuth)) {
+//     api
+//       .getMe()
+//       .then(() => {
+//         next();
+//       })
+//       .catch(() => {
+//         next('/');
+//       });
+//   } else {
+//     next();
+//   }
+// });
 
 export default router;

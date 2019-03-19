@@ -169,15 +169,21 @@ export default class Signup extends Vue {
   private showGPicker: boolean = false;
 
   public created() {
-    axios
-      .get('https://5c86094ecc034a0014bd24ae.mockapi.io/tags')
+    api
+      .getTags()
       .then((res: any) => {
-        this.tags = res.data;
+        this.tags = res.data.TagInfo;
+      })
+      .catch((err: AxiosError) => {
+        alert(err);
       });
-    axios
-      .get('https://5c86094ecc034a0014bd24ae.mockapi.io/games')
+    api
+      .getGames()
       .then((res: any) => {
-        this.games = res.data;
+        this.games = res.data.GameInfo;
+      })
+      .catch((err: AxiosError) => {
+        alert(err);
       });
   }
   public submit() {

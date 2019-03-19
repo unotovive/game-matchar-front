@@ -2,20 +2,20 @@
   <div class="user">
     <div class="main1">
       <div class="back" @click="$router.go(-1)">＜</div>
-      <img :src="user.img">
+      <img :src="user.user.image_url">
       <div class="cont">
         <div class="name-cont">
-          <h1>{{user.name}}, {{user.age | age }}, {{user.gend | gend}}</h1>
+          <h1>{{user.user.name}}, {{user.user.age | age }}, {{user.user.sex | gend}}</h1>
           <div @click="request" class="req">Send Request</div>
         </div>
         <h4>Intro</h4>
-        <p class="intro">{{user.description}}</p>
+        <p class="intro">{{user.user.context}}</p>
         <div class="line"/>
         <h4>Games</h4>
         <div class="game-list">
-          <div class="games" v-if="user.games.length > 0">
+          <div class="games" v-if="user.playGame.length > 0">
             <template>
-              <div v-for="(game, index) in user.games" :key="index" class="game">
+              <div v-for="(game, index) in user.playGame" :key="index" class="game">
                 <game-card :game="game"/>
               </div>
             </template>
@@ -25,9 +25,9 @@
         <div class="line"/>
         <h4>Tags</h4>
         <div class="tag-list">
-          <div class="tags" v-if="user.tags.length > 0">
+          <div class="tags" v-if="user.tag.length > 0">
             <template>
-              <div v-for="(tag, index) in user.tags" :key="index" class="tag">{{tag.name}}</div>
+              <div v-for="(tag, index) in user.tag" :key="index" class="tag">{{tag.tag}}</div>
             </template>
           </div>
           <div v-else>タグが設定されていません。</div>
@@ -35,7 +35,7 @@
         <div class="line"/>
         <h4>ActiveTimes</h4>
         <div class="times">
-          <p class="time" v-for="item in user.playTime" :key="item">{{item}},</p>
+          <p class="time" v-for="item in user.activeTime" :key="item">{{item.time}},</p>
         </div>
       </div>
     </div>
@@ -46,15 +46,15 @@
 import { Vue, Component, Prop, Watch } from 'vue-property-decorator';
 import GameCard from '@/component/GameCard.vue';
 import api from '@/utils/api';
-import { AxiosError } from 'axios';
+import { AxiosError, AxiosResponse } from 'axios';
 
 @Component({
   components: {
     GameCard,
   },
   filters: {
-    age(age: number) {
-      switch (age) {
+    age(age: string) {
+      switch (Number(age)) {
         case 0:
           return '~10';
         case 1:
@@ -69,8 +69,8 @@ import { AxiosError } from 'axios';
           return '?';
       }
     },
-    gend(gend: number) {
-      switch (gend) {
+    gend(gend: string) {
+      switch (Number(gend)) {
         case 0:
           return '🚹';
         case 1:
@@ -84,87 +84,34 @@ import { AxiosError } from 'axios';
   },
 })
 export default class User extends Vue {
-  private user: any = {
-    id: 1,
-    name: 'otobe',
-    img: 'http://placehold.jp/150x150.png',
-    age: 1,
-    gend: 0,
-    description:
-      'ここには長めのユーザー説明っぽい文章的な何かが入る気がするんですよ、おそらく。',
-    playTime: ['じゅうじ', 'じゅうにじ'],
-    games: [
-      {
-        id: '1',
-        name: 'Global Brand Coordinator',
-        img: 'http://placehold.jp/150x150.png',
-      },
-      {
-        id: '2',
-        name: 'Global Quality Administrator',
-        img: 'http://placehold.jp/150x150.png',
-      },
-      {
-        id: '3',
-        name: 'Central Infrastructure Analyst',
-        img: 'http://placehold.jp/150x150.png',
-      },
-      {
-        id: '4',
-        name: 'Legacy Functionality Officer',
-        img: 'http://placehold.jp/150x150.png',
-      },
-    ],
-    tags: [
-      {
-        id: '1',
-        name: 'deliverables',
-      },
-      {
-        id: '2',
-        name: 'Future',
-      },
-      {
-        id: '3',
-        name: 'Fiji',
-      },
-      {
-        id: '4',
-        name: 'SSL',
-      },
-      {
-        id: '5',
-        name: 'Chair',
-      },
-    ],
-  };
+  private user: any = {};
 
-  public request() {
+  @Prop({ default: 0 })
+  private id!: number;
+
+  public created() {
     api
-      .request(this.user.id)
-      .then(() => {
-        alert('送信しました');
+      .getUser(this.id)
+      .then((res: AxiosResponse) => {
+        this.user = res.data;
       })
       .catch((err: AxiosError) => {
         alert(err);
       });
   }
 
-  get age() {
-    switch (this.user.age) {
-      case 0:
-        return '~10';
-      case 1:
-        return '10~';
-      case 2:
-        return '20~';
-      case 3:
-        return '30~';
-      case 4:
-        return '40~';
-      default:
-        return '?';
-    }
+  public request() {
+    const params = {
+      reciever_id: this.id,
+    };
+    api
+      .request(params)
+      .then(() => {
+        alert('送信しました');
+      })
+      .catch((err: AxiosError) => {
+        alert(err);
+      });
   }
 }
 </script>

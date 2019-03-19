@@ -1,4 +1,5 @@
 import axios from 'axios';
+
 // const url = 'http://192.168.200.3:3500/api/v1';
 const url =
   'http://ec2-54-238-186-213.ap-northeast-1.compute.amazonaws.com/api/v1';
@@ -64,5 +65,37 @@ export default {
       },
     };
     return axios.put(`${url}/approve`, params, config);
+  },
+  getUser(id: number) {
+    const config = {
+      headers: {
+        Authorization: localStorage.getItem('key'),
+      },
+    };
+    return axios.get(`${url}/user/${id}`, config);
+  },
+  getRC() {
+    const config = {
+      headers: {
+        Authorization: localStorage.getItem('key'),
+      },
+    };
+    return axios.get(`${url}/recommendation`, config);
+  },
+  getTags() {
+    const config = {
+      headers: {
+        Authorization: localStorage.getItem('key'),
+      },
+    };
+    return axios.get(`${url}/tags`, config);
+  },
+  getGames() {
+    const config = {
+      headers: {
+        Authorization: localStorage.getItem('key'),
+      },
+    };
+    return axios.get(`${url}/games`, config);
   },
 };

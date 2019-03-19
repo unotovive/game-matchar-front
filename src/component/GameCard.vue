@@ -1,6 +1,6 @@
 <template>
   <div class="game-card">
-    <img :src="game.img">
+    <img :src="game.image">
     <p>{{game.name}}</p>
   </div>
 </template>
