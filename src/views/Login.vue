@@ -2,7 +2,7 @@
   <div class="login">
     <div class="container" v-if="mode === 'login'">
       <h1>GameMatchar</h1>
-      <img src="@/assets/mark.png">
+      <img src="@/assets/logo.png">
       <input v-model="email" type="email" placeholder="email">
       <input v-model="password" type="password" placeholder="password">
       <div @click="login" class="button">Login</div>
@@ -10,7 +10,7 @@
     </div>
     <div class="container" v-if="mode === 'register'">
       <h1>GameMatchar</h1>
-      <img src="@/assets/mark.png">
+      <img src="@/assets/logo.png">
       <input v-model="email" type="email" placeholder="email">
       <input v-model="password" type="password" placeholder="password">
       <input v-model="passconf" type="password" placeholder="Confirm password">
@@ -37,8 +37,7 @@ export default class Login extends Vue {
       .login(this.email, this.password)
       .then((res: AxiosResponse) => {
         localStorage.setItem('key', 'Bearer ' + res.data.access_token);
-        if (res.data && res.data.isFirstLogin === true) {
-          console.log(res.data.isFirstLogin);
+        if (res.data.isFirstLogin === 'true') {
           this.$router.push('/signup');
         } else {
           this.$router.push('/home');
@@ -50,7 +49,9 @@ export default class Login extends Vue {
   }
   public register() {
     if (this.password === this.passconf) {
-      api.register(this.email, this.password);
+      api.register(this.email, this.password).then(() => {
+        this.login();
+      });
     } else {
       alert('passwordが一致しません');
     }
@@ -64,29 +65,23 @@ input {
   width: 80%;
   height: 2rem;
   border: none;
-  border-bottom: 2px solid rgba(0, 0, 0, 0.2);
+  border-bottom: 2px solid rgba(#6ac6b4, 0.4);
   padding: 0.2rem;
   margin: 0.2rem;
   box-sizing: border-box;
-  color: #444;
+  color: #6ac6b4;
   font-size: 1.1em;
 }
 ::placeholder {
-  color: rgba(0, 0, 0, 0.2);
+  color: rgba(#6ac6b4, 0.6);
   font-size: 1.1rem;
 }
 .login {
   user-select: none;
   width: 100%;
   height: 100%;
-  background: rgb(118, 184, 82);
-  background: linear-gradient(
-    rgba(255, 255, 255, 1) 0%,
-    rgb(175, 209, 156) 3%,
-    rgba(118, 184, 82, 1) 5%,
-    rgba(141, 194, 111, 1) 100%
-  );
-  color: #fff;
+  background: #fff;
+  color: #6ac6b4;
 
   .container {
     position: relative;
@@ -102,6 +97,7 @@ input {
       font-size: 2.5rem;
       font-family: 'Comfortaa';
       font-weight: bold;
+      color: #6ac6b4;
     }
 
     img {
@@ -113,8 +109,8 @@ input {
       min-height: 50px;
       max-height: 50px;
       border-radius: 50px;
-      background: #fff;
-      color: #76b852;
+      color: #fff;
+      background: #6ac6b4;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -123,7 +119,7 @@ input {
       box-shadow: 0px 0px 6px 4px rgba(0, 0, 0, 0.07);
     }
     .button:active {
-      color: #71b347;
+      color: #6ac6b4;
       background: #eee;
     }
   }

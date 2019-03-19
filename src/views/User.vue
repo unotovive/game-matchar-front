@@ -1,40 +1,57 @@
 <template>
   <div class="user">
-    <div class="main1">
-      <div class="back" @click="$router.go(-1)">＜</div>
-      <img :src="user.img">
-      <div class="cont">
-        <h1>{{user.name}}, {{user.age | age }}, {{user.gend | gend}}</h1>
-        <h4>Intro</h4>
-        <p class="intro">{{user.description}}</p>
-        <div class="line"/>
-        <h4>Games</h4>
+    <img class="bg" src="@/assets/logo.png">
+    <div class="wrapper">
+      <div class="top">
+        <font-awesome-icon @click="$router.go(-1)" icon="arrow-left"/>
+      </div>
+      <div class="prof-info">
+        <img class="prof-img" :src="user.user.image_url">
+        <div class="prof-t">
+          <h1
+            class="prof-tt"
+          >{{user.user.name}} / {{user.user.age | age }} / {{user.user.sex | gend}}</h1>
+          <div @click="request" class="req">Send Request</div>
+        </div>
+      </div>
+      <div class="sec">
+        <h2 class="st">Introduction</h2>
+        <p class="intro">{{user.user.context}}</p>
+      </div>
+      <div class="sec">
+        <h2 class="st">Games</h2>
         <div class="game-list">
-          <div class="games" v-if="user.games.length > 0">
-            <template>
-              <div v-for="(game, index) in user.games" :key="index" class="game">
-                <game-card :game="game"/>
-              </div>
-            </template>
+          <div class="games" v-if="user.playGame.length > 0">
+            <div v-for="(game, index) in user.playGame" :key="index" class="game">
+              <game-card :game="game"/>
+            </div>
           </div>
           <div v-else>ゲームが選択されていません。</div>
         </div>
-        <div class="line"/>
-        <h4>Tags</h4>
+      </div>
+      <div class="sec">
+        <h2 class="st">Tags</h2>
         <div class="tag-list">
-          <div class="tags" v-if="user.tags.length > 0">
+          <div class="tags" v-if="user.tag.length > 0">
             <template>
-              <div v-for="(tag, index) in user.tags" :key="index" class="tag">{{tag.name}}</div>
+              <div v-for="(tag, index) in user.tag" :key="index" class="tag">{{tag.name}}</div>
             </template>
           </div>
           <div v-else>タグが設定されていません。</div>
         </div>
-        <div class="line"/>
-        <h4>ActiveTimes</h4>
+      </div>
+      <div class="sec">
+        <h2 class="st">VoiceChat</h2>
+        <p class="intro" v-if="user.user.VC_flag">VC可能</p>
+        <p class="intro" v-else>VC不可能</p>
+      </div>
+      <div class="sec">
+        <h2 class="st">PlayTime</h2>
         <div class="times">
-          <p class="time" v-for="item in user.playTime" :key="item">{{item}},</p>
+          <p class="intro" v-for="item in user.activeTime" :key="item">{{item.time}},</p>
         </div>
       </div>
+      <div style="height: 3rem;"/>
     </div>
   </div>
 </template>
@@ -42,14 +59,16 @@
 <script lang="ts">
 import { Vue, Component, Prop, Watch } from 'vue-property-decorator';
 import GameCard from '@/component/GameCard.vue';
+import api from '@/utils/api';
+import { AxiosError, AxiosResponse } from 'axios';
 
 @Component({
   components: {
     GameCard,
   },
   filters: {
-    age(age: number) {
-      switch (age) {
+    age(age: string) {
+      switch (Number(age)) {
         case 0:
           return '~10';
         case 1:
@@ -64,8 +83,8 @@ import GameCard from '@/component/GameCard.vue';
           return '?';
       }
     },
-    gend(gend: number) {
-      switch (gend) {
+    gend(gend: string) {
+      switch (Number(gend)) {
         case 0:
           return '🚹';
         case 1:
@@ -79,76 +98,40 @@ import GameCard from '@/component/GameCard.vue';
   },
 })
 export default class User extends Vue {
-  private user: any = {
-    id: 1,
-    name: 'otobe',
-    img: 'http://placehold.jp/150x150.png',
-    age: 1,
-    gend: 0,
-    description:
-      'ここには長めのユーザー説明っぽい文章的な何かが入る気がするんですよ、おそらく。',
-    playTime: ['じゅうじ', 'じゅうにじ'],
-    games: [
-      {
-        id: '1',
-        name: 'Global Brand Coordinator',
-        img: 'http://placehold.jp/150x150.png',
-      },
-      {
-        id: '2',
-        name: 'Global Quality Administrator',
-        img: 'http://placehold.jp/150x150.png',
-      },
-      {
-        id: '3',
-        name: 'Central Infrastructure Analyst',
-        img: 'http://placehold.jp/150x150.png',
-      },
-      {
-        id: '4',
-        name: 'Legacy Functionality Officer',
-        img: 'http://placehold.jp/150x150.png',
-      },
-    ],
-    tags: [
-      {
-        id: '1',
-        name: 'deliverables',
-      },
-      {
-        id: '2',
-        name: 'Future',
-      },
-      {
-        id: '3',
-        name: 'Fiji',
-      },
-      {
-        id: '4',
-        name: 'SSL',
-      },
-      {
-        id: '5',
-        name: 'Chair',
-      },
-    ],
-  };
+  private user: any = {};
 
-  get age() {
-    switch (this.user.age) {
-      case 0:
-        return '~10';
-      case 1:
-        return '10~';
-      case 2:
-        return '20~';
-      case 3:
-        return '30~';
-      case 4:
-        return '40~';
-      default:
-        return '?';
-    }
+  @Prop({ default: 0 })
+  private id!: number;
+
+  public created() {
+    api
+      .getUser(this.id)
+      .then((res: AxiosResponse) => {
+        this.user = res.data;
+      })
+      .catch((err: AxiosError) => {
+        alert(err);
+        if (err.response!.status === 401) {
+          this.$router.push('/');
+        }
+      });
+  }
+
+  public request() {
+    const params = {
+      reciever_id: this.id,
+    };
+    api
+      .request(params)
+      .then(() => {
+        alert('送信しました');
+      })
+      .catch((err: AxiosError) => {
+        alert(err);
+        if (err.response!.status === 401) {
+          this.$router.push('/');
+        }
+      });
   }
 }
 </script>
@@ -157,70 +140,98 @@ export default class User extends Vue {
 .user {
   height: 100vh;
   width: 100vw;
-  background: #f7f7f7;
-  top: 0;
   overflow: auto;
-  padding-top: 100px;
-}
-.main1 {
-  width: 100%;
-  background: #fff;
-  border-radius: 2em 2em 0 0;
-  box-shadow: 0px 0px 6px 4px rgba(0, 0, 0, 0.07);
-}
-img {
   position: relative;
-  top: -70px;
-  width: 150px;
-  height: 150px;
-  box-shadow: 0px 0px 6px 4px rgba(0, 0, 0, 0.07);
-  border-radius: 10px;
 }
-.cont {
+.bg {
+  position: fixed;
+  right: -50px;
+  top: 20%;
+  width: 80vw;
+  z-index: 10;
+}
+.wrapper {
+  position: absolute;
+  top: 0;
+  min-height: 100vh;
+  width: 100vw;
+  background: rgba(#ffffff, 0.8);
+  z-index: 100;
+  padding: 0 1rem;
+  box-sizing: border-box;
+}
+.top {
   width: 100%;
-  position: relative;
-  top: -40px;
+  display: flex;
+  align-items: center;
+  height: 52px;
+}
+.prof-info {
+  padding-top: 1rem;
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+}
+.prof-img {
+  height: 100px;
+  width: 100px;
+  border-radius: 50px;
+  box-sizing: border-box;
+}
+.prof-t {
+  padding-left: 1rem;
+  height: 100px;
+  padding: 10px 1rem;
+  box-sizing: border-box;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  justify-content: space-between;
+  box-sizing: border-box;
 }
-h1 {
-  width: 100%;
-  font-size: 1.4rem;
+.prof-tt {
+  font-size: 1.2rem;
+  font-weight: bold;
+  box-sizing: border-box;
+}
+.req {
+  height: 36px;
+  width: 140px;
+  background: #6ac6b4;
+  border-radius: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #fff;
+  box-sizing: border-box;
+}
+.req:active {
+  background: #5ab6a4;
+  color: #eee;
+}
+.st {
+  font-size: 1.1rem;
   font-weight: bold;
   display: flex;
-  padding: 0 1.2rem;
+  padding: 1.2rem 0;
+  width: 100%;
   box-sizing: border-box;
-  margin-bottom: 0.7rem;
+}
+.sec {
+  width: 100%;
+  box-sizing: border-box;
 }
 .intro {
-  width: 100%;
-  padding: 0 1.2rem;
   box-sizing: border-box;
-  color: #888;
+  text-align: start;
+  word-break: keep-all;
+  word-wrap: break-word;
 }
 .game-list {
   width: 100%;
   overflow: scroll;
-  padding: 0 1.2rem;
   box-sizing: border-box;
 }
 .games {
-  display: flex;
-}
-.line {
-  height: 1px;
-  width: 95%;
-  margin-top: 1.2rem;
-  margin-bottom: 0.7rem;
-  background: rgba(0, 0, 0, 0.07);
-}
-h4 {
-  box-sizing: border-box;
-  color: #888;
-  width: 100%;
-  padding: 0 1.2rem;
-  padding-bottom: 0.7rem;
   display: flex;
 }
 .tag-list {
@@ -245,19 +256,5 @@ h4 {
   display: flex;
   justify-content: center;
   align-items: center;
-}
-.times {
-  width: 100%;
-  padding: 0 1.2rem;
-  box-sizing: border-box;
-  display: flex;
-}
-.back {
-  position: absolute;
-  top: 20px;
-  left: 20px;
-  color: rgba(0, 0, 0, 0.3);
-  font-weight: bold;
-  font-size: 1.4rem;
 }
 </style>

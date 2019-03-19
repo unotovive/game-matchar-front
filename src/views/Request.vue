@@ -8,18 +8,21 @@
         <template v-if="recieving.length > 0">
           <div v-for="(item, index) in recieving" :key="index" class="card">
             <div class="profile" @click="$router.push(`/user/${item.id}`)">
-              <img :src="item.img">
+              <img :src="item.image_url">
               <div class="prof-info">
                 <h2>{{item.name}}</h2>
-                <p>{{item.description}}</p>
+                <p>{{item.context}}</p>
               </div>
             </div>
             <div class="line"/>
             <div class="button">
-              <div class="c-b">×</div>
-              <div class="a-b">✔︎</div>
+              <div class="c-b" @click="unapprove(item.id)">×</div>
+              <div class="a-b" @click="approve(item.id)">✔︎</div>
             </div>
           </div>
+        </template>
+        <template v-else>
+          <p style="padding-top: 1rem;">承認待ちのリクエストはありません。</p>
         </template>
       </div>
       <h4>Sending</h4>
@@ -27,10 +30,10 @@
         <template v-if="sending.length > 0">
           <div v-for="(item, index) in sending" :key="index" class="card">
             <div class="profile" @click="$router.push(`/user/${item.id}`)">
-              <img :src="item.img">
+              <img :src="item.image_url">
               <div class="prof-info">
                 <h2>{{item.name}}</h2>
-                <p>{{item.description}}</p>
+                <p>{{item.context}}</p>
               </div>
             </div>
             <div class="line"/>
@@ -38,6 +41,9 @@
               <div class="c-b-l">cancel</div>
             </div>
           </div>
+        </template>
+        <template v-else>
+          <p style="padding-top: 1rem;">送信中のリクエストはありません。</p>
         </template>
       </div>
     </div>
@@ -62,12 +68,35 @@ export default class Home extends Vue {
     api
       .getRequestList()
       .then((res: AxiosResponse) => {
-        this.recieving = res.data;
-        this.sending = res.data;
+        this.recieving = res.data.requests;
+        this.sending = res.data.sending_request;
       })
       .catch((err: AxiosError) => {
         alert(err);
+        if (err.response!.status === 401) {
+          this.$router.push('/');
+        }
       });
+  }
+
+  public approve(id: number) {
+    const params = {
+      sender_id: id,
+    };
+    api
+      .approve(params)
+      .then(() => {
+        alert('承認しました');
+      })
+      .catch((err: AxiosError) => {
+        alert(err);
+        if (err.response!.status === 401) {
+          this.$router.push('/');
+        }
+      });
+  }
+  public unapprove(id: number) {
+    alert('未実装☺️');
   }
 }
 </script>
