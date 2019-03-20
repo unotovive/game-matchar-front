@@ -7,12 +7,13 @@
     </div>
     <div class="main">
       <div class="img-name">
-        <img :src="img">
-        <input type="text" v-model="name" placeholder="ニックネームを入力">
+        <img alt="kuma3" :src="img">
+        <input type="text" aria-label="nickname" v-model="name" placeholder="ニックネームを入力">
       </div>
       <textarea
         v-model="context"
         placeholder="自己紹介を入力。例：ゆるくやっていきたいです！LoLメインでやっているので誘っていただけると嬉しいです。"
+        aria-label="introduction"
       />
       <div class="field" style="height: auto;">
         <h2>私のゲーム</h2>

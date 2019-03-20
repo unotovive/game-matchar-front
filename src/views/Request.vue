@@ -8,7 +8,7 @@
         <template v-if="recieving.length > 0">
           <div v-for="(item, index) in recieving" :key="index" class="card">
             <div class="profile" @click="$router.push(`/user/${item.id}`)">
-              <img :src="item.image_url">
+              <img :alt="item.name" :src="item.image_url">
               <div class="prof-info">
                 <h2>{{item.name}}</h2>
                 <p>{{item.context}}</p>
@@ -38,7 +38,7 @@
             </div>
             <div class="line"/>
             <div class="button">
-              <div class="c-b-l">cancel</div>
+              <div @click="cancel" class="c-b-l">cancel</div>
             </div>
           </div>
         </template>
@@ -96,7 +96,36 @@ export default class Home extends Vue {
       });
   }
   public unapprove(id: number) {
-    alert('未実装☺️');
+    const params = {
+      sender_id: id,
+    };
+    api
+      .reject(params)
+      .then(() => {
+        alert('拒否しました');
+      })
+      .catch((err: AxiosError) => {
+        alert(err);
+        if (err.response!.status === 401) {
+          this.$router.push('/');
+        }
+      });
+  }
+  public cancel(id: number) {
+    const params = {
+      reciever_id: id,
+    };
+    api
+      .cancel(params)
+      .then(() => {
+        alert('キャンセルしました');
+      })
+      .catch((err: AxiosError) => {
+        alert(err);
+        if (err.response!.status === 401) {
+          this.$router.push('/');
+        }
+      });
   }
 }
 </script>

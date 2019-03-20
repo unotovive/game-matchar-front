@@ -2,8 +2,8 @@
   <div class="search">
     <div class="container">
       <h1>Search</h1>
-      <form class="search_container" @click="relaod">
-        <input type="text" readonly placeholder="search">
+      <form @click="relaod" class="search_container">
+        <input type="text" readonly aria-label="search" placeholder="search">
       </form>
       <h4>Recommend</h4>
       <div class="recommend">
@@ -13,7 +13,7 @@
           class="r-user"
           @click="$router.push(`/user/${item.id}`)"
         >
-          <img :src="item.image_url">
+          <img :alt="item.name" :src="item.image_url">
           <div class="match">
             <h5>♡{{item.match | int}}</h5>
           </div>

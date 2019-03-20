@@ -1,12 +1,12 @@
 <template>
   <div class="user">
-    <img class="bg" src="@/assets/logo.png">
+    <img class="bg" alt="bg" src="@/assets/logo.png">
     <div class="wrapper">
       <div class="top">
         <font-awesome-icon @click="$router.go(-1)" icon="arrow-left"/>
       </div>
       <div class="prof-info">
-        <img class="prof-img" :src="user.user.image_url">
+        <img class="prof-img" :alt="user.user.name" :src="user.user.image_url">
         <div class="prof-t">
           <h1 class="prof-tt">
             {{user.user.name}} / {{user.user.age | age }} /
@@ -36,7 +36,7 @@
         <div class="tag-list">
           <div class="tags" v-if="user.tag.length > 0">
             <template>
-              <div v-for="(tag, index) in user.tag" :key="index" class="tag">{{tag.name}}</div>
+              <div v-for="(tag, index) in user.tag" :key="index" class="tag">{{tag.tag}}</div>
             </template>
           </div>
           <div v-else>タグが設定されていません。</div>

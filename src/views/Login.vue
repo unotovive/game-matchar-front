@@ -2,18 +2,18 @@
   <div class="login">
     <div class="container" v-if="mode === 'login'">
       <h1>GameMatchar</h1>
-      <img src="@/assets/logo.png">
-      <input v-model="email" type="email" placeholder="email">
-      <input v-model="password" type="password" placeholder="password">
+      <img alt="title" src="@/assets/logo.png">
+      <input v-model="email" aria-label="email" type="email" placeholder="email">
+      <input v-model="password" aria-label="password" type="password" placeholder="password">
       <div @click="login" class="button">Login</div>
       <p @click="mode = 'register' ">Register</p>
     </div>
     <div class="container" v-if="mode === 'register'">
       <h1>GameMatchar</h1>
       <img src="@/assets/logo.png">
-      <input v-model="email" type="email" placeholder="email">
-      <input v-model="password" type="password" placeholder="password">
-      <input v-model="passconf" type="password" placeholder="Confirm password">
+      <input v-model="email" aria-label="email" type="email" placeholder="email">
+      <input v-model="password" aria-label="pass1" type="password" placeholder="password">
+      <input v-model="passconf" aria-label="pass2" type="password" placeholder="Confirm password">
       <div @click="register" class="button">Register</div>
       <p @click="mode = 'login' ">Login</p>
     </div>
