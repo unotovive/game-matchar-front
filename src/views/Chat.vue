@@ -123,6 +123,7 @@ export default class Chat extends Vue {
 }
 .main {
   width: 100%;
+  min-height: 100vh;
   padding: 60px 1em;
   background: #f7f7f7;
   box-sizing: border-box;
@@ -137,7 +138,7 @@ export default class Chat extends Vue {
 }
 .mes {
   max-width: 80%;
-  background: rgb(255, 164, 128);
+  background: #ec7d94;
   padding: 6px 1em;
   margin-top: 6px;
   border-radius: 15px;
@@ -145,7 +146,7 @@ export default class Chat extends Vue {
 .isme {
   justify-content: flex-end;
   .mes {
-    background: rgb(108, 205, 250);
+    background: #89dac9;
   }
 }
 
@@ -165,7 +166,7 @@ h2 {
 }
 .send {
   min-width: 60px;
-  background: #71b347;
+  background: #6ac6b4;
   height: 30px;
   border-radius: 5px;
   margin: 3px;
@@ -175,6 +176,6 @@ h2 {
   align-items: center;
 }
 .send:active {
-  background: #5e963b;
+  background: rgb(88, 167, 151);
 }
 </style>

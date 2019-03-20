@@ -3,11 +3,11 @@
     <picker :isShow="showPicker" :list="tags" class="picker" :game="true" @select="select"/>
     <picker :isShow="showGPicker" :list="games" class="picker" @select="selectG"/>
     <div class="top">
-      <h1>GameMatchar</h1>
+      <h1>SignUp</h1>
     </div>
     <div class="main">
       <div class="img-name">
-        <img src="@/assets/kuma3.jpeg">
+        <img :src="img">
         <input type="text" v-model="name" placeholder="ニックネームを入力">
       </div>
       <textarea
@@ -55,9 +55,15 @@
       <div class="field" style="height: auto;">
         <h2>私の性別</h2>
         <div class="age-list">
-          <div @click="setGend(0)" class="gend" :class="{ 'selected': gend === 0 }">🚹</div>
-          <div @click="setGend(1)" class="gend" :class="{ 'selected': gend === 1 }">🚺</div>
-          <div @click="setGend(2)" class="gend" :class="{ 'selected': gend === 2 }">㊙️</div>
+          <div @click="setGend(0)" class="gend" :class="{ 'selected': gend === 0 }">
+            <font-awesome-icon icon="male"/>
+          </div>
+          <div @click="setGend(1)" class="gend" :class="{ 'selected': gend === 1 }">
+            <font-awesome-icon icon="female"/>
+          </div>
+          <div @click="setGend(2)" class="gend" :class="{ 'selected': gend === 2 }">
+            <font-awesome-icon icon="user-secret"/>
+          </div>
         </div>
       </div>
       <div class="field" style="height: auto;">
@@ -152,6 +158,7 @@ export default class Signup extends Vue {
   private age: number | null = null;
   private gend: number | null = null;
 
+  private img: string = '';
   private name: string = '';
   private context: string = '';
   private VCflag: boolean = false;
@@ -169,6 +176,9 @@ export default class Signup extends Vue {
   private showGPicker: boolean = false;
 
   public created() {
+    const imgnum: number = Math.floor(Math.random() * Math.floor(1080));
+    this.img = `https://picsum.photos/500?image=${imgnum}`;
+
     api
       .getTags()
       .then((res: any) => {
@@ -201,6 +211,7 @@ export default class Signup extends Vue {
     }
     const params = {
       name: this.name,
+      img: this.img,
       context: this.context,
       VCflag: this.VCflag ? '1' : '0',
       sex: String(this.gend),
@@ -246,31 +257,35 @@ export default class Signup extends Vue {
 }
 
 .top {
-  position: fixed;
   height: 52px;
-  width: 100%;
-  background: #fff;
-  font-family: 'Comfortaa';
-  color: #71b347;
-  font-size: 1.2rem;
-  font-weight: bold;
-  box-shadow: 0px 0px 6px 4px rgba(0, 0, 0, 0.1);
   display: flex;
   align-items: center;
+  width: 100%;
+  color: #6ac6b4;
+  position: fixed;
+  font-size: 1.2rem;
+  text-align: left;
+  z-index: 200;
+  background: linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 1) 0%,
+    rgba(255, 255, 255, 0.9) 100%
+  );
 
   h1 {
+    font-weight: bold;
     font-size: 1.4rem;
     padding-left: 0.7em;
   }
 }
 
 .main {
-  background: #f7f7f7;
+  background: #fff;
   width: 100%;
   height: auto;
   padding: 1rem;
   padding-top: calc(1em + 52px);
-  padding-bottom: calc(1em + 52px);
+  padding-bottom: 1em;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
@@ -291,7 +306,7 @@ export default class Signup extends Vue {
       border: none;
       border-radius: 0;
       outline: none;
-      background: #ddd;
+      background: #f2f2f2;
       border-radius: 5px;
       width: calc(100% - 100px);
       margin-left: 10px;
@@ -307,7 +322,7 @@ export default class Signup extends Vue {
     border: none;
     border-radius: 0;
     outline: none;
-    background: #ddd;
+    background: #f2f2f2;
     border-radius: 5px;
     padding: 0.5em 0.5em;
     height: 7.2rem;
@@ -342,8 +357,8 @@ export default class Signup extends Vue {
   font-weight: bold;
   font-size: 2em;
   padding: 0;
-  color: #71b347;
-  border: 2px solid #71b347;
+  color: #6ac6b4;
+  border: 2px solid #6ac6b4;
   min-width: 2rem;
   margin-left: 1rem;
   p {
@@ -371,8 +386,8 @@ export default class Signup extends Vue {
   font-weight: bold;
   font-size: 2em;
   padding: 0;
-  color: #71b347;
-  border: 2px solid #71b347;
+  color: #6ac6b4;
+  border: 2px solid #6ac6b4;
   min-width: 2rem;
   margin-left: 1rem;
   p {
@@ -383,8 +398,8 @@ export default class Signup extends Vue {
 .tag {
   height: 1.3em;
   width: auto;
-  border: 2px solid #71b347;
-  color: #71b347;
+  border: 2px solid #6ac6b4;
+  color: #6ac6b4;
   border-radius: 0.8em;
   white-space: pre;
   padding: 0 0.5em;
@@ -424,13 +439,13 @@ h2 {
 .picker {
   width: 100vw;
   height: 100vh;
-  z-index: 100;
+  z-index: 500;
   position: fixed;
   top: 0;
 }
 .selected {
-  color: #71b347;
-  border-color: #71b347;
+  color: #6ac6b4;
+  border-color: #6ac6b4;
 }
 .cp_ipcheck {
   width: 100%;
@@ -464,7 +479,7 @@ h2 {
   transition: transform 0.4s cubic-bezier(0.45, 1.8, 0.5, 0.75);
   -webkit-transform: rotate(-45deg) scale(0, 0);
   transform: rotate(-45deg) scale(0, 0);
-  border: 2px solid #71b347;
+  border: 2px solid #6ac6b4;
   border-top-style: none;
   border-right-style: none;
 }
@@ -484,22 +499,14 @@ h2 {
   background: #ffffff;
 }
 .bot {
-  position: fixed;
   height: 52px;
   width: 100vw;
-  bottom: 0;
-  left: 0;
-  right: 0;
   background: #fff;
-  font-family: 'Comfortaa';
   color: #444;
   font-size: 1.1rem;
   font-weight: bold;
-  box-shadow: 0px 0px 6px 4px rgba(0, 0, 0, 0.1);
   display: flex;
-  justify-content: center;
   align-items: center;
-  z-index: 10;
   h1 {
     font-size: 1.4rem;
     padding-left: 0.7em;
@@ -508,12 +515,13 @@ h2 {
 .button {
   width: 90%;
   height: 80%;
-  background: #f74a7b;
+  margin-top: auto;
+  background: #6ac6b4;
   border-radius: 5px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
   color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 .button:active {
   background: #d3406a;
