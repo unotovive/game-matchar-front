@@ -2,7 +2,7 @@
   <div class="chat">
     <div class="top">
       <span @click="$router.go(-1)">＜戻る</span>
-      <h1>{{name}}</h1>
+      <h1>Chatroom</h1>
     </div>
     <div class="main">
       <div v-for="(message, index) in messages" :key="index">
