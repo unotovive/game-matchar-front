@@ -267,6 +267,7 @@ export default class Signup extends Vue {
   font-size: 1.2rem;
   text-align: left;
   z-index: 200;
+  box-sizing: border-box;
   background: linear-gradient(
     to bottom,
     rgba(255, 255, 255, 1) 0%,
@@ -501,20 +502,22 @@ h2 {
 }
 .bot {
   height: 52px;
-  width: 100vw;
+  width: 100%;
   background: #fff;
   color: #444;
   font-size: 1.1rem;
   font-weight: bold;
   display: flex;
   align-items: center;
+  box-sizing: border-box;
+
   h1 {
     font-size: 1.4rem;
     padding-left: 0.7em;
   }
 }
 .button {
-  width: 90%;
+  width: 100%;
   height: 80%;
   margin-top: auto;
   background: #6ac6b4;
@@ -525,6 +528,6 @@ h2 {
   justify-content: center;
 }
 .button:active {
-  background: #d3406a;
+  background: #58a596;
 }
 </style>
