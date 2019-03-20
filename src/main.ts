@@ -4,11 +4,11 @@ import router from './router';
 import './registerServiceWorker';
 import '@/firebase';
 import { library } from '@fortawesome/fontawesome-svg-core';
-import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
+import { faArrowLeft, faMale, faFemale, faUserSecret } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 
 Vue.config.productionTip = false;
-library.add(faArrowLeft);
+library.add(faArrowLeft, faMale, faFemale, faUserSecret);
 Vue.component('font-awesome-icon', FontAwesomeIcon);
 
 new Vue({

@@ -2,8 +2,8 @@
   <div class="search">
     <div class="container">
       <h1>Search</h1>
-      <form class="search_container">
-        <input type="text" aria-label="search" placeholder="search">
+      <form @click="relaod" class="search_container">
+        <input type="text" readonly aria-label="search" placeholder="search">
       </form>
       <h4>Recommend</h4>
       <div class="recommend">
@@ -47,6 +47,21 @@ export default class ChatList extends Vue {
 
   public alert(mes: string) {
     alert(mes);
+  }
+
+  public relaod() {
+    alert('検索なんて実装していないのでリロードします');
+    api
+      .getRC()
+      .then((res: AxiosResponse) => {
+        this.rc = res.data.recommendation;
+      })
+      .catch((err: AxiosError) => {
+        alert(err);
+        if (err.response!.status === 401) {
+          this.$router.push('/');
+        }
+      });
   }
 
   public created() {

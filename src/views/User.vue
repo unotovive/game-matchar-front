@@ -8,10 +8,12 @@
       <div class="prof-info">
         <img class="prof-img" :alt="user.user.name" :src="user.user.image_url">
         <div class="prof-t">
-          <h1
-            class="prof-tt"
-          >{{user.user.name}} / {{user.user.age | age }} / {{user.user.sex | gend}}</h1>
-          <div @click="request" class="req">Send Request</div>
+          <h1 class="prof-tt">
+            {{user.user.name}} / {{user.user.age | age }} /
+            <span v-html="user.user.sex | gend"/>
+          </h1>
+          <div v-if="!isme" @click="request" class="req">Send Request</div>
+          <div v-if="isme" @click="editProfile" class="req">Edit Profile</div>
         </div>
       </div>
       <div class="sec">
@@ -86,11 +88,11 @@ import { AxiosError, AxiosResponse } from 'axios';
     gend(gend: string) {
       switch (Number(gend)) {
         case 0:
-          return '🚹';
+          return '<font-awesome-icon size="40" icon="male"/>';
         case 1:
-          return '🚺';
+          return '<font-awesome-icon icon="female"/>';
         case 2:
-          return '㊙︎';
+          return '<font-awesome-icon icon="user-secret"/>';
         default:
           return '?';
       }
@@ -103,7 +105,22 @@ export default class User extends Vue {
   @Prop({ default: 0 })
   private id!: number;
 
+  private isme: boolean = false;
+
   public created() {
+    api
+      .getMe()
+      .then((res: AxiosResponse) => {
+        if (Number(res.data.id) === Number(this.id)) {
+          this.isme = true;
+        }
+      })
+      .catch((err: AxiosError) => {
+        alert(err);
+        if (err.response!.status === 401) {
+          this.$router.push('/');
+        }
+      });
     api
       .getUser(this.id)
       .then((res: AxiosResponse) => {
@@ -115,6 +132,10 @@ export default class User extends Vue {
           this.$router.push('/');
         }
       });
+  }
+
+  public editProfile() {
+    alert('未実装（）');
   }
 
   public request() {
@@ -252,7 +273,7 @@ export default class User extends Vue {
   border-radius: 1em;
   padding: 0 1em;
   width: auto;
-  background: #71b347;
+  background: #6ac6b4;
   display: flex;
   justify-content: center;
   align-items: center;

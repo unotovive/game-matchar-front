@@ -148,7 +148,7 @@ export default class Picker extends Vue {
     border-radius: 1em;
     padding: 0 1em;
     width: auto;
-    background: #71b347;
+    background: #6ac6b4;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -157,7 +157,7 @@ export default class Picker extends Vue {
   .button {
     width: 90%;
     height: 80%;
-    background: #f74a7b;
+    background: #ed6b86;
     border-radius: 5px;
     display: flex;
     justify-content: center;
@@ -165,10 +165,10 @@ export default class Picker extends Vue {
     color: #fff;
   }
   .button:active {
-    background: #d3406a;
+    background: #df657d;
   }
   .item:active {
-    background: #528533;
+    background: rgb(98, 182, 165);
   }
   .selected-enter-active,
   .selected-leave-active {

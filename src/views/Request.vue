@@ -201,7 +201,7 @@ img {
   margin-bottom: 1rem;
   padding: 1rem;
   box-shadow: 0px 0px 6px 4px rgba(0, 0, 0, 0.1);
-  border-radius: 10px;
+  border-radius: 5px;
 }
 .prof-info {
   display: flex;
@@ -246,17 +246,18 @@ img {
   height: 36px;
   width: 160px;
   border-radius: 30px;
-  color: rgba(0, 0, 0, 0.3);
-  border: 3px solid rgba(0, 0, 0, 0.3);
+  color: #fff;
+  background: #ed6b86;
   display: flex;
   justify-content: center;
   align-items: center;
   box-sizing: border-box;
 }
+
 .a-b {
   height: 36px;
   width: 80px;
-  background: rgb(241, 80, 31);
+  background: #6ac6b4;
   border-radius: 30px;
   color: #fff;
   display: flex;
