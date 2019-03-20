@@ -170,7 +170,7 @@ export default class Tab extends Vue {
   height: 24px;
 }
 .icon-selected {
-  color: #77be4a;
-  fill: #77be4a;
+  color: #6ac6b4;
+  fill: #6ac6b4;
 }
 </style>

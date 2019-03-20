@@ -7,7 +7,7 @@
     </div>
     <div class="main">
       <div class="img-name">
-        <img src="@/assets/kuma3.jpeg">
+        <img :src="img">
         <input type="text" v-model="name" placeholder="ニックネームを入力">
       </div>
       <textarea
@@ -55,9 +55,15 @@
       <div class="field" style="height: auto;">
         <h2>私の性別</h2>
         <div class="age-list">
-          <div @click="setGend(0)" class="gend" :class="{ 'selected': gend === 0 }">🚹</div>
-          <div @click="setGend(1)" class="gend" :class="{ 'selected': gend === 1 }">🚺</div>
-          <div @click="setGend(2)" class="gend" :class="{ 'selected': gend === 2 }">㊙️</div>
+          <div @click="setGend(0)" class="gend" :class="{ 'selected': gend === 0 }">
+            <font-awesome-icon icon="male"/>
+          </div>
+          <div @click="setGend(1)" class="gend" :class="{ 'selected': gend === 1 }">
+            <font-awesome-icon icon="female"/>
+          </div>
+          <div @click="setGend(2)" class="gend" :class="{ 'selected': gend === 2 }">
+            <font-awesome-icon icon="user-secret"/>
+          </div>
         </div>
       </div>
       <div class="field" style="height: auto;">
@@ -152,6 +158,7 @@ export default class Signup extends Vue {
   private age: number | null = null;
   private gend: number | null = null;
 
+  private img: string = '';
   private name: string = '';
   private context: string = '';
   private VCflag: boolean = false;
@@ -169,6 +176,9 @@ export default class Signup extends Vue {
   private showGPicker: boolean = false;
 
   public created() {
+    const imgnum: number = Math.floor(Math.random() * Math.floor(1080));
+    this.img = `https://picsum.photos/500?image=${imgnum}`;
+
     api
       .getTags()
       .then((res: any) => {
@@ -201,6 +211,7 @@ export default class Signup extends Vue {
     }
     const params = {
       name: this.name,
+      img: this.img,
       context: this.context,
       VCflag: this.VCflag ? '1' : '0',
       sex: String(this.gend),
@@ -251,8 +262,15 @@ export default class Signup extends Vue {
   align-items: center;
   width: 100%;
   color: #6ac6b4;
+  position: fixed;
   font-size: 1.2rem;
   text-align: left;
+  z-index: 200;
+  background: linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 1) 0%,
+    rgba(255, 255, 255, 0.9) 100%
+  );
 
   h1 {
     font-weight: bold;
@@ -266,7 +284,7 @@ export default class Signup extends Vue {
   width: 100%;
   height: auto;
   padding: 1rem;
-  padding-top: 1em;
+  padding-top: calc(1em + 52px);
   padding-bottom: 1em;
   box-sizing: border-box;
   display: flex;
@@ -421,7 +439,7 @@ h2 {
 .picker {
   width: 100vw;
   height: 100vh;
-  z-index: 100;
+  z-index: 500;
   position: fixed;
   top: 0;
 }
