@@ -150,5 +150,12 @@ table {
   color: #444;
   width: 100vw;
   height: 100vh;
+  max-width: 768px;
+}
+
+input,
+textarea,
+select {
+  font-size: 17px;
 }
 </style>

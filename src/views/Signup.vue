@@ -398,14 +398,16 @@ export default class Signup extends Vue {
   }
 }
 .tag {
-  height: 1.3em;
+  height: 2em;
   width: auto;
-  border: 2px solid #6ac6b4;
-  color: #6ac6b4;
-  border-radius: 0.8em;
+  background: #6ac6b4;
+  color: #fff;
+  border-radius: 1em;
   white-space: pre;
   padding: 0 0.5em;
   margin-right: 0.3em;
+  display: flex;
+  align-items: center;
 }
 h2 {
   height: 1.2em;
