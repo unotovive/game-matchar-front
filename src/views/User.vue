@@ -44,7 +44,7 @@
       </div>
       <div class="sec">
         <h2 class="st">VoiceChat</h2>
-        <p class="intro" v-if="user.user.VC_flag">VC可能</p>
+        <p class="intro" v-if="user.user.VC_flag === '0'">VC可能</p>
         <p class="intro" v-else>VC不可能</p>
       </div>
       <div class="sec">
