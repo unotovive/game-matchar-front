@@ -87,6 +87,18 @@ export default class Home extends Vue {
       .approve(params)
       .then(() => {
         alert('承認しました');
+        api
+          .getRequestList()
+          .then((res: AxiosResponse) => {
+            this.recieving = res.data.requests;
+            this.sending = res.data.sending_request;
+          })
+          .catch((err: AxiosError) => {
+            alert(err);
+            if (err.response!.status === 401) {
+              this.$router.push('/');
+            }
+          });
       })
       .catch((err: AxiosError) => {
         alert(err);
@@ -103,6 +115,18 @@ export default class Home extends Vue {
       .reject(params)
       .then(() => {
         alert('拒否しました');
+        api
+          .getRequestList()
+          .then((res: AxiosResponse) => {
+            this.recieving = res.data.requests;
+            this.sending = res.data.sending_request;
+          })
+          .catch((err: AxiosError) => {
+            alert(err);
+            if (err.response!.status === 401) {
+              this.$router.push('/');
+            }
+          });
       })
       .catch((err: AxiosError) => {
         alert(err);
@@ -119,6 +143,18 @@ export default class Home extends Vue {
       .cancel(params)
       .then(() => {
         alert('キャンセルしました');
+        api
+          .getRequestList()
+          .then((res: AxiosResponse) => {
+            this.recieving = res.data.requests;
+            this.sending = res.data.sending_request;
+          })
+          .catch((err: AxiosError) => {
+            alert(err);
+            if (err.response!.status === 401) {
+              this.$router.push('/');
+            }
+          });
       })
       .catch((err: AxiosError) => {
         alert(err);
